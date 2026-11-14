@@ -20,6 +20,7 @@
     },
     "other_rate": 10.0,
     "pickup_weight": 40.0,
+    "ticket_stock": 999,
     "history": 30
   },
   "shop": {

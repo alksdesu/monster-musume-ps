@@ -8,9 +8,13 @@ from .language import SETTINGS as SETTINGS_FILE
 
 
 FOREVER = "2999/12/31 23:59:59"
+# The gacha page prints a pool's end_at on its banner; an empty end shows no label.
+UNBOUNDED = ""
 FREE = "free_costs"
-ALL_SUFFIX, PICK_SUFFIX = "（全部开放）", "（挑选开放）"
+ALL_SUFFIX, PICK_SUFFIX, WAVE_SUFFIX = "（全部开放）", "（挑选开放）", "（按期开放）"
 OPEN_ALL = "全部开放"
+# Six waves of pools keep the gacha page under about seventy banners.
+WAVE_LIMIT = 6
 
 
 @dataclass(frozen=True)
@@ -20,6 +24,8 @@ class Opener:
     kind: str
     title: str
     blurb: str
+    end: str = FOREVER
+    waves: bool = False
 
 
 @dataclass(frozen=True)
@@ -75,6 +81,13 @@ KNOBS = (
         "gacha.other_rate",
         "非角色奖品占比（%）",
         "附赠道具一类奖品在每次抽取里占的比例。",
+    ),
+    Knob(
+        "ticket_stock",
+        "gacha",
+        "gacha.ticket_stock",
+        "券池的券每次登录补到（张）",
+        "开着的券池各自的券不够这个数就补齐；0 表示不补，券只能靠邮件和活动拿。",
     ),
     Knob(
         "gacha_history",
@@ -188,7 +201,9 @@ OPENERS = (
         "gacha",
         "gacha",
         "卡池全部开放",
-        "结束了的和还没开始的卡池全部开到永远。",
+        "结束了的和还没开始的卡池全部开到永远；一次全开有五百多个横幅，卡池页会很慢，按期挑着开更合适。",
+        end=UNBOUNDED,
+        waves=True,
     ),
     Opener(
         "open_mission", "mission", "mission", "任务全部开放", "限时任务全部开到永远。"
@@ -360,39 +375,53 @@ class Presets:
     def _entry(self, name: str) -> dict | None:
         return next((entry for entry in self._entries() if entry["name"] == name), None)
 
-    # The entry is rewritten whole each time: it starts today and never ends.
-    def _put(self, name: str, kind: str, ids: list) -> None:
+    # Whatever an entry of the kind is called, all: true opens the kind entirely.
+    def _opening_all(self, kind: str) -> list[dict]:
+        return [
+            entry
+            for entry in self._entries()
+            if entry["kind"] == kind and entry.get("all") is True
+        ]
+
+    def _save(self, activities: list[dict]) -> None:
         document = self.runtime.schedule.config.read()
-        kept = [entry for entry in document["activities"] if entry["name"] != name]
-        if ids:
+        self.planner.save({**document, "activities": activities})
+
+    # The entry is rewritten whole each time: it starts today and never ends.
+    def _put(self, opener: Opener, suffix: str, selector: dict | None) -> None:
+        name = _named(opener, suffix)
+        kept = [entry for entry in self._entries() if entry["name"] != name]
+        if selector:
             kept.append(
                 {
                     "name": name,
-                    "kind": kind,
-                    "ids": sorted(ids, key=str),
+                    "kind": opener.kind,
+                    **selector,
                     "start": self._today(),
-                    "end": FOREVER,
+                    "end": opener.end,
                     "enabled": True,
                 }
             )
-        self.planner.save({**document, "activities": kept})
+        self._save(kept)
+
+    def _dated(self, kind: str) -> int:
+        return len(self.runtime.schedule.selected({"kind": kind, "all": True}))
 
     def open_all(self, key: str) -> dict:
         opener = self._opener(key)
-        ids = [
-            entrance["id"]
-            for entrance in self.runtime.schedule.entrances(opener.kind)
-            if entrance["end"]
-        ]
-        self._put(_named(opener, ALL_SUFFIX), opener.kind, ids)
-        return {"opened": len(ids)}
+        if not any(
+            entry.get("enabled", True) for entry in self._opening_all(opener.kind)
+        ):
+            self._put(opener, ALL_SUFFIX, {"all": True})
+        return {"opened": self._dated(opener.kind)}
 
     def close_all(self, key: str) -> dict:
         opener = self._opener(key)
-        entry = self._entry(_named(opener, ALL_SUFFIX))
-        if entry is not None:
-            self._put(_named(opener, ALL_SUFFIX), opener.kind, [])
-        return {"dropped": len(entry["ids"]) if entry else 0}
+        opening = self._opening_all(opener.kind)
+        if not opening:
+            return {"dropped": 0}
+        self._save([entry for entry in self._entries() if entry not in opening])
+        return {"dropped": self._dated(opener.kind)}
 
     def picked(self, key: str) -> list:
         entry = self._entry(_named(self._opener(key), PICK_SUFFIX))
@@ -410,8 +439,68 @@ class Presets:
             raise ValueError(f"No {opener.kind} with id {unknown[0]}")
         current = set(self.picked(key))
         chosen = current | set(ids) if on else current - set(ids)
-        self._put(_named(opener, PICK_SUFFIX), opener.kind, list(chosen))
+        selector = {"ids": sorted(chosen, key=str)} if chosen else None
+        self._put(opener, PICK_SUFFIX, selector)
         return {"picked": len(chosen), "changed": len(chosen ^ current)}
+
+    def _wave_entry(self, opener: Opener) -> dict | None:
+        return self._entry(_named(opener, WAVE_SUFFIX))
+
+    def picked_waves(self, key: str) -> list[str]:
+        entry = self._wave_entry(self._opener(key))
+        if entry is None:
+            return []
+        moments = entry["running_at"]
+        return list(moments) if isinstance(moments, list) else [moments]
+
+    # Only banners the client can still show are worth counting against the page.
+    def _banners(self, kind: str, ids: list) -> int:
+        if kind != "gacha":
+            return len(ids)
+        catalog = self.runtime.gacha.catalog
+        pools = map(catalog.pool, ids)
+        return sum(catalog.stocked(pool) and catalog.shown(pool) for pool in pools)
+
+    def waves(self, key: str) -> dict:
+        opener = self._opener(key)
+        if not opener.waves:
+            raise KeyError(f"{key} is not opened by waves")
+        names = {
+            entrance["id"]: entrance["name"]
+            for entrance in self.runtime.schedule.entrances(opener.kind)
+        }
+        chosen = set(self.picked_waves(key))
+        listed = [
+            {
+                "at": wave["at"],
+                "groups": [{"id": identity, "name": names[identity]} for identity in wave["ids"]],
+                "banners": self._banners(opener.kind, wave["ids"]),
+                "picked": wave["at"] in chosen,
+            }
+            for wave in reversed(self.runtime.schedule.waves(opener.kind))
+        ]
+        return {"waves": listed, "limit": WAVE_LIMIT, "picked": sorted(chosen)}
+
+    def pick_waves(self, key: str, moments: list) -> dict:
+        opener = self._opener(key)
+        if not opener.waves:
+            raise KeyError(f"{key} is not opened by waves")
+        if not isinstance(moments, list) or not all(
+            isinstance(moment, str) for moment in moments
+        ):
+            raise ValueError("moments has to be a list of wave moments")
+        chosen = sorted(set(moments))
+        if len(chosen) > WAVE_LIMIT:
+            raise ValueError(f"At most {WAVE_LIMIT} waves can be open at once")
+        known = {wave["at"] for wave in self.runtime.schedule.waves(opener.kind)}
+        unknown = [moment for moment in chosen if moment not in known]
+        if unknown:
+            raise ValueError(f"No {opener.kind} wave starts at {unknown[0]}")
+        selector = {"running_at": chosen} if chosen else None
+        self._put(opener, WAVE_SUFFIX, selector)
+        entry = {"kind": opener.kind, "running_at": chosen} if chosen else None
+        opened = len(self.runtime.schedule.selected(entry)) if entry else 0
+        return {"picked": len(chosen), "opened": opened}
 
     def items(self, key: str, query: str, status: str, offset: int, limit: int) -> dict:
         opener = self._opener(key)
@@ -434,8 +523,12 @@ class Presets:
                     "blurb": opener.blurb,
                     "running": running,
                     "total": total,
-                    "opened": self._entry(_named(opener, ALL_SUFFIX)) is not None,
+                    "opened": any(
+                        entry.get("enabled", True)
+                        for entry in self._opening_all(opener.kind)
+                    ),
                     "picked": self.picked(opener.key),
+                    "waves": self.picked_waves(opener.key) if opener.waves else None,
                 }
             )
         free = self.free()

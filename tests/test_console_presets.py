@@ -42,6 +42,10 @@ async def test_opening_all_of_a_kind_keeps_everything_running(panel):
     assert bingo["opened"] and bingo["running"] == bingo["total"]
     entry = runtime_of(panel).schedule.config.read()["activities"][0]
     assert entry["kind"] == "bingo" and entry["end"].startswith("2999/")
+    assert entry["all"] is True and "ids" not in entry
+    again = await post(panel, "presets/run", {"key": "open_bingo"})
+    assert again == opened
+    assert len(runtime_of(panel).schedule.config.read()["activities"]) == 1
     closed = await post(panel, "presets/run", {"key": "open_bingo", "on": False})
     assert closed["dropped"] == opened["opened"]
     assert (
@@ -49,6 +53,20 @@ async def test_opening_all_of_a_kind_keeps_everything_running(panel):
         is False
     )
     await post(panel, "presets/run", {"key": "open_nothing"}, expect=404)
+
+
+async def test_an_all_entry_counts_as_opened_whatever_its_name(panel):
+    named = {"name": "歴代のガチャ", "kind": "gacha", "all": True, "end": "2999/12/31 23:59:59"}
+    await post(panel, "schedule", {"document": {"activities": [named], "rows": []}})
+    gacha = listed((await get(panel, "presets"))["actions"], "open_gacha")
+    # Without a start of its own the entry leaves pools that have not begun alone.
+    assert gacha["opened"] and gacha["total"] - 3 < gacha["running"] < gacha["total"]
+    closed = await post(panel, "presets/run", {"key": "open_gacha", "on": False})
+    assert closed["dropped"] > 700
+    assert runtime_of(panel).schedule.config.read()["activities"] == []
+    paused = {**named, "enabled": False}
+    await post(panel, "schedule", {"document": {"activities": [paused], "rows": []}})
+    assert listed((await get(panel, "presets"))["actions"], "open_gacha")["opened"] is False
 
 
 async def test_entrances_are_picked_one_by_one(panel):
@@ -110,3 +128,37 @@ async def test_knobs_turn_the_settings_of_their_group(panel):
     await post(
         panel, "presets/run", {"key": "sugoroku_tickets", "value": 1}, expect=400
     )
+
+
+async def test_gacha_waves_are_listed_and_picked(panel):
+    page = await get(panel, "presets/waves", key="open_gacha")
+    assert page["limit"] == 6 and page["picked"] == []
+    waves = page["waves"]
+    assert len(waves) > 300 and waves[0]["at"] > waves[-1]["at"]
+    newest = waves[0]
+    assert newest["groups"] and all(group["name"] for group in newest["groups"])
+    assert 0 < newest["banners"] <= len(newest["groups"])
+    assert all(wave["picked"] is False for wave in waves)
+    moments = [wave["at"] for wave in waves[:2]]
+    picked = await post(panel, "presets/waves", {"key": "open_gacha", "moments": moments})
+    assert picked["picked"] == 2
+    assert picked["opened"] >= len(newest["groups"])
+    entry = runtime_of(panel).schedule.config.read()["activities"][0]
+    assert entry["kind"] == "gacha" and entry["running_at"] == sorted(moments)
+    assert entry["end"] == "" and entry["name"].endswith("（按期开放）")
+    again = await get(panel, "presets/waves", key="open_gacha")
+    assert [wave["at"] for wave in again["waves"] if wave["picked"]] == moments
+    gacha = listed((await get(panel, "presets"))["actions"], "open_gacha")
+    assert gacha["waves"] == sorted(moments)
+    await post(
+        panel,
+        "presets/waves",
+        {"key": "open_gacha", "moments": [wave["at"] for wave in waves[:7]]},
+        expect=400,
+    )
+    await post(panel, "presets/waves", {"key": "open_gacha", "moments": ["2020/01/01 00:00:00"]}, expect=400)
+    await get(panel, "presets/waves", key="open_bingo", expect=404)
+    cleared = await post(panel, "presets/waves", {"key": "open_gacha", "moments": []})
+    assert cleared == {"picked": 0, "opened": 0}
+    assert runtime_of(panel).schedule.config.read()["activities"] == []
+

@@ -66,10 +66,14 @@ class GachaEngine:
 
     def _listed(self, now: int) -> list[dict]:
         hidden = set(self._settings()["hidden_ids"])
+        catalog = self.catalog
         return [
             pool
-            for pool in self.catalog.pools()
-            if pool["id"] not in hidden and not self.catalog.ended(pool, now)
+            for pool in catalog.pools()
+            if pool["id"] not in hidden
+            and not catalog.ended(pool, now)
+            and catalog.stocked(pool)
+            and catalog.shown(pool)
         ]
 
     def listed(self, now: int) -> list[str]:
@@ -80,6 +84,7 @@ class GachaEngine:
             pool["id"] in self._settings()["hidden_ids"]
             or not self.catalog.started(pool, now)
             or self.catalog.ended(pool, now)
+            or not self.catalog.stocked(pool)
         ):
             raise ApiRejected("OUT_OF_SCHEDULE")
         if pool["period_name"] and not self.periods.active(

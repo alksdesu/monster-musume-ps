@@ -1,10 +1,17 @@
 from datetime import datetime, timedelta, timezone
+import hashlib
 import json
 from pathlib import Path
 
 
 TIME_LAYOUTS = ("%Y/%m/%d %H:%M:%S", "%Y/%m/%d %H:%M", "%Y/%m/%d")
 FULL_LAYOUT = TIME_LAYOUTS[0]
+LISTING = "ablist.json"
+
+
+def bundle_file(bundle: str) -> str:
+    # The asset listing names a bundle by the md5 of its lower-cased, dash-joined path.
+    return hashlib.md5(bundle.lower().replace("/", "-").encode()).hexdigest() + ".bytes"
 
 
 def moment(text: str) -> datetime:
@@ -31,6 +38,7 @@ class MasterData:
         self.data_root = self.asset_root / "data"
         self._cache: dict[Path, tuple[tuple[int, int], dict]] = {}
         self._indexes: dict[tuple[str, str], tuple[list, dict]] = {}
+        self._bundles: tuple[dict, frozenset[str]] | None = None
         self.overlays: list = []
 
     def base(self, name: str) -> dict:
@@ -46,6 +54,21 @@ class MasterData:
 
     def asset(self, group: str, identity: int) -> dict:
         return self._read(self.asset_root / group / f"{int(identity)}.json")
+
+    # None when the asset listing was never downloaded, so nothing can be ruled out.
+    def bundles(self) -> frozenset[str] | None:
+        path = self.root / LISTING
+        if not path.exists():
+            return None
+        listing = self._read(path)
+        if self._bundles is None or self._bundles[0] is not listing:
+            names = frozenset(row["path"] for row in listing["data"])
+            self._bundles = (listing, names)
+        return self._bundles[1]
+
+    def has_bundle(self, bundle: str) -> bool:
+        listed = self.bundles()
+        return listed is None or bundle_file(bundle) in listed
 
     def assets(self, group: str) -> list[dict]:
         paths = (self.asset_root / group).glob("*.json")

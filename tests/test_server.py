@@ -160,11 +160,15 @@ async def test_native_login_initialize_and_home(http):
         22,
     ]
     wallets = await client.call("wallet/all", {"_z0": 0})
-    assert {row["name"]: row["val"] for row in wallets["data"]["wallets"]} == {
+    held = {(row["category"], row["name"]): row["val"] for row in wallets["data"]["wallets"]}
+    tickets = {key: val for key, val in held.items() if key[0] == "ticket"}
+    assert {key[1]: val for key, val in held.items() if key not in tickets} == {
         "paid_coin": 0,
         "gold": 500,
         "free_coin": 300,
     }
+    # Logging in stocks every open ticket pool's ticket.
+    assert len(tickets) > 500 and set(tickets.values()) == {999}
     await client.call("player/home/visit", {"_z0": 0}, method="PUT")
     assert (await http.app[RUNTIME].store.read("dmm:local"))["home_visited_at"] == NOW
 

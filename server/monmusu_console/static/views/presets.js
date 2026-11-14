@@ -114,6 +114,73 @@ function picker(action, remount) {
   return details;
 }
 
+// Waves are the real-world line-ups: whatever ran together on a given day. A few can be open at once.
+function waves(action, remount) {
+  const box = h("div", {});
+  const chosen = new Set(action.waves);
+  const saveButton = button("按选中的期开放", save, "main");
+  let limit = 0;
+
+  function label() {
+    saveButton.textContent = chosen.size ? `按选中的 ${chosen.size} 期开放` : "按选中的期开放";
+  }
+
+  async function load() {
+    const listed = await attempt(() => api.get("presets/waves", { key: action.key }));
+    if (listed) draw(listed);
+  }
+
+  async function save() {
+    const outcome = await attempt(() => api.post("presets/waves", { key: action.key, moments: [...chosen] }));
+    if (outcome) await remount(chosen.size ? `已按 ${outcome.picked} 期开放 ${outcome.opened} 个卡池，游戏回标题重进后可见。` : "已清空按期开放的名单。");
+  }
+
+  function draw(listed) {
+    limit = listed.limit;
+    fill(
+      box,
+      h("p", { class: "note" }, `每一期是现实中某一天同时在开的卡池。最多同时选 ${limit} 期；最新一期和官服关服前一致。横幅数是客户端还能显示出来的卡池数。`),
+      table(
+        [
+          {
+            title: "",
+            cell: (row) => {
+              const tick = h("input", { type: "checkbox", checked: chosen.has(row.at), "aria-label": `选中 ${row.at} 这一期` });
+              tick.addEventListener("change", () => {
+                if (tick.checked && chosen.size >= limit) {
+                  tick.checked = false;
+                  receipt(`最多同时开 ${limit} 期，先取消一期再选。`);
+                  return;
+                }
+                if (tick.checked) chosen.add(row.at);
+                else chosen.delete(row.at);
+                label();
+              });
+              return tick;
+            },
+          },
+          { title: "开始", cell: (row) => row.at.slice(0, 10) },
+          { title: "横幅", cell: (row) => String(row.banners) },
+          { title: "卡池", cell: (row) => row.groups.map((group) => group.name).join("、") },
+        ],
+        listed.waves,
+        "主数据里没有带起止时间的卡池。",
+      ),
+    );
+    label();
+  }
+
+  const details = h(
+    "details",
+    { class: "picker" },
+    h("summary", {}, `按期开放${action.waves.length ? `（已选 ${action.waves.length} 期）` : ""}`),
+    h("div", { class: "row" }, saveButton),
+    box,
+  );
+  details.addEventListener("toggle", () => details.open && !box.childElementCount && load());
+  return details;
+}
+
 function opener(action, remount) {
   async function all(on) {
     const asked = on ? `把${action.title.replace("全部开放", "")}全部开到永远？` : "撤销这一类的全部开放，恢复各自原本的期间？";
@@ -128,6 +195,7 @@ function opener(action, remount) {
     h("div", { class: "entry-text" }, h("strong", {}, action.title), h("p", {}, action.blurb)),
     meter(action.running, action.total, "个在期"),
     h("span", { class: "entry-actions" }, action.opened ? button("撤销全开", () => all(false)) : button("全部开放", () => all(true), "main")),
+    action.waves && waves(action, remount),
     picker(action, remount),
   );
 }

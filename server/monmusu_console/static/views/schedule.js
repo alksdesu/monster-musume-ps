@@ -34,6 +34,7 @@ function setSide(entry, name, text) {
 }
 
 function scope(entry) {
+  if (entry.all === true) return "历来全部（有结束时间的）";
   if ("running_at" in entry) return `${entry.running_at} 时在期的全部`;
   return entry.ids.length > 4 ? `${entry.ids.slice(0, 4).join("、")} 等 ${entry.ids.length} 个` : entry.ids.join("、");
 }
@@ -195,15 +196,18 @@ export const schedule = {
       head,
       list,
       previewBox,
-      h("h3", {}, "保留某一天在期的内容"),
-      h("p", {}, "现实时间往后走，在期的内容会陆续结束。加一条这样的条目，可以把指定时刻还在期的某一类内容全部留住。"),
+      h("h3", {}, "按类整批开放"),
+      h("p", {}, "现实时间往后走，在期的内容会陆续结束。选一类内容：可以把指定时刻还在期的全部留住，也可以不挑日子，把这一类历来有结束时间的全部开到永远。"),
       h(
         "div",
         { class: "row" },
         field("类型", keepKind),
         field("那一刻（日本时间）", keepAt),
-        button("加入排期，一直开放", () =>
+        button("留住那一刻在期的", () =>
           add({ name: `${keepAt.value} 时在期的${KINDS[keepKind.value] ?? keepKind.value}`, kind: keepKind.value, running_at: keepAt.value.trim(), end: FOREVER, enabled: true }),
+        ),
+        button("历来全部一直开放", () =>
+          add({ name: `${KINDS[keepKind.value] ?? keepKind.value}（全部开放）`, kind: keepKind.value, all: true, end: FOREVER, enabled: true }),
         ),
       ),
       h("h3", {}, "从目录里挑内容"),

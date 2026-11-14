@@ -258,8 +258,13 @@ def test_unknown_pools_are_not_found(runtime, state, identity):
 def test_listing_matches_the_official_sample(runtime):
     _, response = official("gacha/list")
     listed = runtime.gacha.listed(response["timesync"])
-    assert listed == response["data"]["gacha_ids"]
-    assert len(listed) == 599
+    catalog = runtime.gacha.catalog
+    official_ids = response["data"]["gacha_ids"]
+    # The official server kept one test pool whose prize table the client's master data lacks.
+    unstocked = [pool for pool in official_ids if not catalog.stocked(catalog.pool(pool))]
+    assert unstocked == ["gacha_ticket.normal.ticket_Default230806test_youkai"]
+    assert listed == [pool for pool in official_ids if pool not in unstocked]
+    assert len(listed) == 598
 
 
 def test_listing_keeps_upcoming_pools_and_drops_finished_ones(runtime, pool):
@@ -446,12 +451,15 @@ def test_guaranteed_table_waits_for_its_draw_count(runtime, state):
     assert cards(runtime.gacha.draw(state, order(LOCAL), NOW)) == [COMMON, COMMON]
 
 
-def test_missing_prize_tables_are_reported(runtime, state):
+def test_pools_without_a_prize_table_are_closed(runtime, state):
     forge(runtime, prize_table_id="absent")
     before = deepcopy(state)
-    with pytest.raises(ValueError, match="Unknown gacha prize table absent"):
+    assert LOCAL not in runtime.gacha.listed(NOW)
+    with pytest.raises(ApiRejected, match="OUT_OF_SCHEDULE"):
         runtime.gacha.draw(state, order(LOCAL), NOW)
     assert state == before
+    with pytest.raises(ValueError, match="Unknown gacha prize table absent"):
+        runtime.gacha.lottery.table("absent")
 
 
 def test_fixed_extras_are_paid_once_per_batch(runtime, state):

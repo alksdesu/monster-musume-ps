@@ -5,7 +5,7 @@ import hashlib
 import json
 import logging
 
-from .masterdata import FULL_LAYOUT, exact
+from .masterdata import FULL_LAYOUT, exact, moment
 
 
 LOGGER = logging.getLogger("monmusu.schedule")
@@ -130,6 +130,7 @@ ENTRANCES = {
     ),
 }
 PLAIN = ("banner", "loginbonus", "goods", "mission", "announce")
+SELECTORS = ("ids", "running_at", "all")
 
 
 def _listed(identity, name, start: str, end: str) -> dict:
@@ -309,20 +310,75 @@ class Schedule:
             for row in self._table(entrance.table, scheduled)
         ]
 
-    def _ids(self, entry: dict) -> list:
-        if ("ids" in entry) == ("running_at" in entry):
+    def selected(self, entry: dict) -> list:
+        chosen = [name for name in SELECTORS if name in entry]
+        if len(chosen) != 1:
             raise ValueError(
-                f"A schedule entry takes either ids or running_at: {entry}"
+                f"A schedule entry takes exactly one of {', '.join(SELECTORS)}: {entry}"
             )
-        if "ids" in entry:
+        selector = chosen[0]
+        if selector == "ids":
             return entry["ids"]
-        moment = self.masters.timestamp(_moment(entry["running_at"]))
+        if selector == "all":
+            if entry["all"] is not True:
+                raise ValueError(f"A schedule entry's all can only be true: {entry}")
+            # What never ends needs nothing to keep it running.
+            return [row["id"] for row in self.entrances(entry["kind"]) if row["end"]]
+        moments = entry["running_at"]
+        if not isinstance(moments, list):
+            moments = [moments]
+        if not moments:
+            raise ValueError(f"A schedule entry's running_at names no moment: {entry}")
+        at = {self.masters.timestamp(_moment(text)) for text in moments}
         return [
             entrance["id"]
             for entrance in self.entrances(entry["kind"])
-            # What never ends needs nothing to keep it running.
             if entrance["end"]
-            and self.masters.in_term(entrance["start"], entrance["end"], moment)
+            and any(
+                self.masters.in_term(entrance["start"], entrance["end"], moment)
+                for moment in at
+            )
+        ]
+
+    def _dated(self, kind: str) -> list[tuple[dict, int, int]]:
+        moments: dict[str, int] = {}
+
+        def stamp(text: str) -> int:
+            if text not in moments:
+                moments[text] = self.masters.timestamp(text)
+            return moments[text]
+
+        return [
+            (entrance, stamp(entrance["start"]), stamp(entrance["end"]))
+            for entrance in self.entrances(kind)
+            if entrance["start"] and entrance["end"]
+        ]
+
+    # A wave is what was running at the last moment something started on a day;
+    # a day whose content all carried over into the next wave is not one of its own.
+    def waves(self, kind: str) -> list[dict]:
+        dated = self._dated(kind)
+        latest: dict[str, tuple[int, str]] = {}
+        for entrance, start, _ in dated:
+            day = entrance["start"].split(" ")[0]
+            if day not in latest or latest[day][0] < start:
+                latest[day] = (start, entrance["start"])
+        snapshots = [
+            (text, {entrance["id"] for entrance, start, end in dated if start <= at < end})
+            for at, text in sorted(latest.values())
+        ]
+        kept: list[tuple[str, set]] = []
+        for text, ids in reversed(snapshots):
+            if ids and not (kept and ids <= kept[-1][1]):
+                kept.append((text, ids))
+        kept.reverse()
+        order = {entrance["id"]: index for index, (entrance, _, _) in enumerate(dated)}
+        return [
+            {
+                "at": moment(text).strftime(FULL_LAYOUT),
+                "ids": sorted(ids, key=order.__getitem__),
+            }
+            for text, ids in kept
         ]
 
     def _granting_sheets(self, category: str, name: str) -> list[dict]:
@@ -487,7 +543,7 @@ class Schedule:
         for entry in document["activities"]:
             if entry.get("enabled", True):
                 window = _Window(entry, self.masters.timestamp)
-                for identity in self._ids(entry):
+                for identity in self.selected(entry):
                     changes.extend(self._kinds[entry["kind"]](identity, window))
         for entry in document["rows"]:
             changes.extend(self._direct(entry))

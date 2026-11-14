@@ -80,10 +80,16 @@ def test_the_shipped_schedule_reopens_every_closed_mode(runtime):
     }
     assert all(set(table) == {"asset", "nest", "rows"} for table in payload["tables"])
     assert len(payload["revision"]) == 16
-    for rows in assets.values():
+    for asset, rows in assets.items():
+        # Pools, and what the pool entry drags along, lose their end outright so the
+        # gacha page prints no expiry on their banners; everything else runs to 2999.
+        allowed = {""} if asset == "gacha_data.asset" else {FOREVER, ""}
         for row in rows:
             assert set(row) == {"key", "strings", "caches"}
-            assert set(row["strings"].values()) == {FOREVER}
+            assert set(row["strings"].values()) <= allowed
+    assert {FOREVER} == {
+        value for row in assets["event_list_data.asset"] for value in row["strings"].values()
+    }
     masters = runtime.masters
     for stage in (10017, 10018, STAGE):
         row = masters.lookup("sugoroku_data", "stage_id", stage)
@@ -265,6 +271,8 @@ def test_a_pool_group_reopens_with_its_banners(runtime):
     group = ended_group_with_banners(runtime)
     catalog = runtime.gacha.catalog
     pools = [pool["id"] for pool in group["enclosure"]]
+    # The shipped schedule keeps every pool open, so the check starts from none.
+    scheduled(runtime)
     assert all(catalog.ended(catalog.pool(pool), NOW) for pool in pools)
     changes = scheduled(runtime, activity("gacha", group["id"], end=FOREVER))
     assert {row["key"]["id"] for row in changes["gacha_data"]} == set(pools)
@@ -451,6 +459,65 @@ def test_entries_can_keep_whatever_was_running(runtime):
     assert not seasons["bonus_pass_data"]
 
 
+def test_waves_are_the_line_ups_of_real_days(runtime):
+    schedule = runtime.schedule
+    waves = schedule.waves("gacha")
+    assert 300 < len(waves) < 400
+    moments = [runtime.masters.timestamp(wave["at"]) for wave in waves]
+    assert moments == sorted(moments) and len(set(moments)) == len(moments)
+    for wave in waves:
+        assert wave["at"].count(":") == 2 and wave["ids"]
+    latest = waves[-1]
+    assert set(latest["ids"]) == set(
+        schedule.selected({"kind": "gacha", "running_at": SNAPSHOT})
+    )
+    # No wave is a plain subset of the wave after it.
+    for earlier, later in zip(waves, waves[1:]):
+        assert not set(earlier["ids"]) <= set(later["ids"])
+    two = schedule.selected({"kind": "gacha", "running_at": [latest["at"], waves[-2]["at"]]})
+    assert set(two) == set(latest["ids"]) | set(waves[-2]["ids"])
+    changes = scheduled(
+        runtime, {"kind": "gacha", "running_at": [latest["at"]], "end": ""}
+    )
+    assert all(row["fields"] == {"end_at": ""} for row in changes["gacha_data"])
+    catalog = runtime.gacha.catalog
+    assert not any(
+        catalog.ended(catalog.pool(pool), NOW + 400 * DAY) for pool in latest["ids"]
+    )
+    assert schedule.waves("bingo")
+
+
+def test_entries_can_open_a_whole_kind(runtime):
+    masters = runtime.masters
+    changes = scheduled(runtime, {"kind": "gacha", "all": True, "end": FOREVER})
+    dated = {
+        pool["id"]
+        for group in masters.base("gacha_data")["table"]
+        for pool in group["enclosure"]
+        if pool["end_at"]
+    }
+    assert len(dated) > 1000
+    assert {row["key"]["id"] for row in changes["gacha_data"]} == dated
+    assert all(row["fields"] == {"end_at": FOREVER} for row in changes["gacha_data"])
+    catalog = runtime.gacha.catalog
+    assert not any(catalog.ended(catalog.pool(pool), NOW + 400 * DAY) for pool in dated)
+    upcoming = next(
+        pool
+        for pool in catalog.pools()
+        if pool["start_at"] and masters.timestamp(pool["start_at"]) > NOW
+    )
+    assert not catalog.started(upcoming, NOW)
+    listed = set(runtime.gacha.listed(NOW))
+    # Pools the client could not show or draw stay off the list however the schedule reads.
+    usable = {pool for pool in dated if catalog.stocked(catalog.pool(pool)) and catalog.shown(catalog.pool(pool))}
+    assert len(dated) - len(usable) > 200
+    assert listed >= usable - {upcoming["id"]} and not (listed & (dated - usable))
+    sheets = scheduled(runtime, {"kind": "loginbonus", "all": True, "end": FOREVER})
+    assert {row["key"]["id"] for row in sheets["login_bonus"]} == {
+        sheet["id"] for sheet in masters.base("login_bonus")["table"] if sheet["end_dt"]
+    }
+
+
 def test_plain_rows_and_shop_tabs_can_be_scheduled(runtime):
     changes = scheduled(
         runtime,
@@ -547,6 +614,17 @@ def test_rows_can_be_named_directly(runtime):
             ],
             "rows": [],
         },
+        {
+            "activities": [{"kind": "bingo", "ids": [10], "all": True, "end": FOREVER}],
+            "rows": [],
+        },
+        {"activities": [{"kind": "gacha", "all": False, "end": FOREVER}], "rows": []},
+        {"activities": [{"kind": "gacha", "running_at": [], "end": FOREVER}], "rows": []},
+        {
+            "activities": [{"kind": "gacha", "running_at": [SNAPSHOT, 5], "end": FOREVER}],
+            "rows": [],
+        },
+        {"activities": [{"kind": "gacha", "all": 1, "end": FOREVER}], "rows": []},
         {"activities": []},
         {
             "activities": [],

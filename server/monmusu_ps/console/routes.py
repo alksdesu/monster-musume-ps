@@ -346,6 +346,15 @@ async def pick_preset(request: web.Request) -> web.Response:
     return web.json_response(_console(request).presets.pick(key, ids, bool(on)))
 
 
+async def preset_waves(request: web.Request) -> web.Response:
+    return web.json_response(_console(request).presets.waves(_query(request, "key")))
+
+
+async def pick_preset_waves(request: web.Request) -> web.Response:
+    key, moments = await _body(request, "key", "moments")
+    return web.json_response(_console(request).presets.pick_waves(key, moments))
+
+
 async def language(request: web.Request) -> web.Response:
     return web.json_response(_console(request).language.document())
 
@@ -473,6 +482,8 @@ ROUTES = (
     ("POST", "/api/presets/run", run_preset),
     ("GET", "/api/presets/items", preset_items),
     ("POST", "/api/presets/pick", pick_preset),
+    ("GET", "/api/presets/waves", preset_waves),
+    ("POST", "/api/presets/waves", pick_preset_waves),
     ("GET", "/api/language", language),
     ("POST", "/api/language", choose_language),
     ("GET", "/api/content", content_tables),

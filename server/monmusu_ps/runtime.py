@@ -20,6 +20,7 @@ from .core.farming import Ranch
 from .core.gacha import GachaEngine
 from .core.gacha_box import BoxGacha
 from .core.gacha_catalog import GachaCatalog
+from .core.gacha_tickets import TicketStock
 from .core.inbox import Inbox
 from .core.initial import create_player
 from .core.journal import Journal
@@ -219,8 +220,10 @@ class Runtime:
         )
         self.limits = Limits(self.calendar)
         self.boxes = RuntimeConfig(settings.root / "server/data/box_gacha.json")
+        catalog = GachaCatalog(self.masters)
+        self.tickets = TicketStock(catalog, self.config, self.resources, self.journal)
         self.gacha = GachaEngine(
-            GachaCatalog(self.masters),
+            catalog,
             Lottery(self.masters, self.config, self.rng),
             BoxGacha(self.boxes, self.masters, self.resources, self.rng),
             self.config,
