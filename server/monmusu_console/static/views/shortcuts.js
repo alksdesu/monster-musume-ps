@@ -6,6 +6,7 @@ const RESULTS = {
   units_max: (r) => `拉满 ${r.filled} 个角色`,
   boms_all: (r) => `新加入 ${r.added} 个召唤物`,
   skins_all: (r) => `发放 ${r.given} 件皮肤`,
+  subskills_all: (r) => `发放 ${r.given} 种技能插件`,
   stories_all: (r) => `新加入 ${r.added} 个角色，发放 ${r.skins} 件皮肤，拉高 ${r.raised} 个角色的等级，登记 ${r.opened} 段剧情`,
   stories_read: (r) => `标记 ${r.marked} 段剧情为已读`,
   quests_all: (r) => `登记 ${r.cleared} 关通关`,
@@ -30,6 +31,8 @@ function tally(key, status) {
       return [status.boms.owned, status.boms.total, "个召唤物已拥有"];
     case "skins_all":
       return [status.skins.held, status.skins.total, "件皮肤已持有"];
+    case "subskills_all":
+      return [status.subskills.held, status.subskills.total, "种技能插件已持有"];
     case "stories_all":
       return [status.stories.open, status.stories.total, "段剧情已可看"];
     case "stories_read":

@@ -587,6 +587,19 @@ def test_rows_can_be_named_directly(runtime):
     changes = scheduled(runtime, rows=[row])
     assert fields(changes, "shop_tab", id=2101) == row["fields"]
     assert runtime.masters.lookup("shop_tab", "id", 2101)["endDate"] == FOREVER
+    # A wallet is found by a field called name, the word the lookup uses for its table.
+    category, name = TICKET
+    wallet = {
+        "table": "wallet_template",
+        "key": {"category": category, "name": name},
+        "fields": {"expire_at": FOREVER},
+    }
+    changes = scheduled(runtime, rows=[wallet])
+    assert runtime.schedule.error is None
+    assert fields(changes, "wallet_template", category=category, name=name) == {
+        "expire_at": FOREVER
+    }
+    assert runtime.schedule.row("wallet_template", wallet["key"])["name"] == name
 
 
 @pytest.mark.parametrize(

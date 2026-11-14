@@ -105,8 +105,7 @@ class Roster:
         return self._indexed("unit_skin_data", build)
 
     def _books(self) -> _Books:
-        masters, spoken = self.runtime.masters, self.runtime.localization
-        memory = spoken.memory()
+        masters = self.runtime.masters
         return _Books(
             rarities={row["id"]: row for row in masters.table("unit_rarity")},
             ranks={row["rank"]: row for row in masters.table("unit_rank_info_table")},
@@ -116,7 +115,7 @@ class Roster:
             abilities=self._abilities(),
             weapons=self._weapon_caps(),
             skins=self._skins_by_card(),
-            say=(lambda text: (memory.get(text) or text) if memory else text),
+            say=self.runtime.localization.speaker(),
         )
 
     def potential_cap(self) -> int:

@@ -147,6 +147,13 @@ class Localization:
             return source
         return memory.get(source) or source
 
+    # One look at the memory serves every text the caller goes on to ask about.
+    def speaker(self) -> Callable[[str], str]:
+        memory = self._memory()
+        if memory is None:
+            return lambda source: source
+        return lambda source: memory.get(source) or source
+
     def names(self) -> dict[str, str]:
         memory = self._memory()
         if memory is None:

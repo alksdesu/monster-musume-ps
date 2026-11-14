@@ -18,6 +18,7 @@ from .configs import (
     MissingKeys,
 )
 from .masters import MasterTool
+from .naming import Names
 from .planner import Planner
 from .presets import Presets
 from .players import Players
@@ -47,7 +48,8 @@ class Console:
     def __init__(self, runtime, ring: LogRing, folders: Folders):
         self.service = Service(runtime, ring)
         self.saves = Saves(runtime, folders.backups)
-        self.players = Players(runtime)
+        self.names = Names(runtime)
+        self.players = Players(runtime, self.names)
         self.roster = Roster(runtime)
         self.shortcuts = Shortcuts(runtime, self.roster, self.saves.backup)
         schedule = runtime.schedule
@@ -69,8 +71,8 @@ class Console:
             SHARED,
             applied={"social.json": runtime.social.graph.reload},
         )
-        self.planner = Planner(runtime, self.files)
-        self.content = Content(runtime, self.files)
+        self.planner = Planner(runtime, self.files, self.names)
+        self.content = Content(runtime, self.files, self.names)
         self.presets = Presets(runtime, self.files, self.planner)
         self.language = Language(runtime, self.files)
         self.captures = Captures(folders.captures)
@@ -254,7 +256,7 @@ async def run_shortcut(request: web.Request) -> web.Response:
 
 
 async def resources(request: web.Request) -> web.Response:
-    return web.json_response({"rows": _console(request).players.catalog()})
+    return web.json_response({"rows": _console(request).names.catalog()})
 
 
 async def schedule(request: web.Request) -> web.Response:
@@ -366,7 +368,13 @@ async def choose_language(request: web.Request) -> web.Response:
 
 async def content_tables(request: web.Request) -> web.Response:
     content = _console(request).content
-    return web.json_response({"groups": content.groups(), "tables": content.tables()})
+    return web.json_response(
+        {
+            "groups": content.groups(),
+            "tables": content.tables(),
+            "fields": content.fields(),
+        }
+    )
 
 
 async def content_rows(request: web.Request) -> web.Response:

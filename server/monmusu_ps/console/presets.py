@@ -107,8 +107,8 @@ KNOBS = (
         "drops_per_clear",
         "quest",
         "subskill_prizes.drops_per_clear",
-        "每次通关副技能掉落数",
-        "迷宫关卡每次通关掉的副技能个数。",
+        "每次通关技能插件掉落数",
+        "迷宫关卡每次通关掉的技能插件个数。",
     ),
     Knob(
         "unit_capacity",
@@ -121,8 +121,8 @@ KNOBS = (
         "attachable_capacity",
         "item",
         "resources.attachable_capacity",
-        "副技能仓库上限",
-        "副技能最多持有多少个。",
+        "技能插件仓库上限",
+        "每一种技能插件最多持有多少个。",
     ),
     Knob(
         "potential_cap",
@@ -281,6 +281,13 @@ LINKS = (
     Link("wallets_max", "item", "shortcuts", "货币拉满", "在「一键」页按存档执行。"),
     Link("items_max", "item", "shortcuts", "道具全满", "在「一键」页按存档执行。"),
     Link("skins_all", "item", "shortcuts", "皮肤全开", "在「一键」页按存档执行。"),
+    Link(
+        "subskills_all",
+        "item",
+        "shortcuts",
+        "技能插件全开",
+        "在「一键」页按存档执行。",
+    ),
 )
 
 
@@ -465,8 +472,9 @@ class Presets:
         opener = self._opener(key)
         if not opener.waves:
             raise KeyError(f"{key} is not opened by waves")
+        say = self.runtime.localization.speaker()
         names = {
-            entrance["id"]: entrance["name"]
+            entrance["id"]: say(entrance["name"])
             for entrance in self.runtime.schedule.entrances(opener.kind)
         }
         chosen = set(self.picked_waves(key))

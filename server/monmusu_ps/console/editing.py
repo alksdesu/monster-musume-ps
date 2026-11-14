@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 from copy import deepcopy
 
 from ..core.sync import COLLECTIONS, diff_state
+from . import catalog
 
 
 SYNCED = {"player", "modules", *(state_key for state_key, _ in COLLECTIONS.values())}
@@ -39,11 +40,11 @@ class Editing:
             outcome["synced"] = sync is not None
             # The client learns of removed rows only by loading the save again.
             outcome["dropped"] = dropped(before, state)
-            outcome["unsynced"] = sorted(
-                name
-                for name in state
+            outcome["unsynced"] = [
+                {"name": name, "title": catalog.section_label(name)}
+                for name in sorted(state)
                 if name not in SYNCED
                 and name not in INTERNAL
                 and state[name] != before.get(name)
-            )
+            ]
             runtime.outbox.post(profile, sync)

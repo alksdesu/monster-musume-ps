@@ -1,4 +1,4 @@
-import { api, attempt, button, field, fill, h, pen, receipt, refreshMarks, struck, table } from "../app.js";
+import { api, attempt, button, field, fill, h, named, pen, receipt, refreshMarks, struck, table } from "../app.js";
 import { groupActions } from "./presets.js";
 
 const PAGE = 50;
@@ -6,9 +6,10 @@ const POSITION = "#";
 const SEARCH_DELAY = 300;
 const OPEN_UP_TO = 12;
 const DATE = /^(\d{4})\/(\d{2})\/(\d{2})(?: (\d{2}):(\d{2})(?::(\d{2}))?)?$/;
-const JAPANESE = /[぀-ヿ一-鿿]/;
+const STEP = /\.|(?=\[)/;
 const browse = { table: "", q: "", offset: 0, changed: false };
 let labels = new Map();
+let fieldNames = {};
 let resourcesList = null;
 let groupsList = [];
 let tablesList = [];
@@ -16,6 +17,8 @@ let tablesList = [];
 const scalar = (value) => value === null || typeof value !== "object";
 const link = (name, key) => `#content/${name}${key ? `/${encodeURIComponent(JSON.stringify(key))}` : ""}`;
 const titled = (name) => labels.get(name) ?? name;
+const fieldLabel = (name) => fieldNames[name] ?? name;
+const placed = (index) => `第 ${index + 1} 项`;
 
 function rowName(key, title) {
   const where = POSITION in key ? `第 ${key[POSITION] + 1} 行` : Object.values(key).join("，");
@@ -25,6 +28,19 @@ function rowName(key, title) {
 function joined(parent, step) {
   if (!parent) return String(step);
   return typeof step === "number" ? `${parent}[${step}]` : `${parent}.${step}`;
+}
+
+// A place inside a row is read out in the labels of the fields that lead to it.
+function pathLabel(path) {
+  return path
+    .split(STEP)
+    .map((step) => (step.startsWith("[") ? placed(Number(step.slice(1, -1))) : fieldLabel(step)))
+    .join(" › ");
+}
+
+// The value the data keeps, with what the game calls it underneath.
+function hinted(shown, hint) {
+  return hint ? [shown, h("span", { class: "said" }, hint)] : shown;
 }
 
 function summary(value) {
@@ -106,7 +122,9 @@ function groupedCatalog(groups, tables, chosen) {
 function spokenCell(value, said, needle) {
   const shown = hit(value, needle);
   if (!said) return shown;
-  return h("span", { class: "spoken", title: String(value) }, h("span", { class: "said" }, said), " ", h("span", { class: "source" }, shown));
+  const cell = named(hit(said, needle), shown);
+  cell.title = String(value);
+  return cell;
 }
 
 function groupSection(group, actions, remount) {
@@ -138,10 +156,10 @@ async function drawGroups(pane, remount) {
     table(
       [
         { title: "表", cell: (change) => titled(change.table) },
-        { title: "行", cell: (change) => h("a", { href: link(change.table, change.key) }, rowName(change.key)) },
-        { title: "字段", cell: (change) => change.path },
-        { title: "原值", cell: (change) => struck(String(change.shipped ?? "")) },
-        { title: "现值", cell: (change) => pen(String(change.value)) },
+        { title: "行", cell: (change) => h("a", { href: link(change.table, change.key) }, rowName(change.key, change.title)) },
+        { title: "字段", cell: (change) => h("span", { title: change.path }, pathLabel(change.path)) },
+        { title: "原值", cell: (change) => hinted(struck(String(change.shipped ?? "")), change.hints.shipped) },
+        { title: "现值", cell: (change) => hinted(pen(String(change.value)), change.hints.value) },
         { title: "", cell: (change) => button("改回", () => revert(change), "quiet") },
       ],
       changes.map((change) => ({ ...change, marked: true })),
@@ -234,7 +252,7 @@ async function drawRows(pane, chosen, remount) {
   function cell(column, row) {
     const value = row.values[column.name];
     const changed = row.changed.some((path) => path === column.name || path.startsWith(`${column.name}.`) || path.startsWith(`${column.name}[`));
-    const shown = scalar(value) ? spokenCell(value, row.spoken[column.name], browse.q.trim()) : summary(value);
+    const shown = scalar(value) ? spokenCell(value, row.hints[column.name], browse.q.trim()) : summary(value);
     return changed ? pen(shown) : shown;
   }
 
@@ -283,7 +301,7 @@ async function drawRows(pane, chosen, remount) {
     pane,
     h("h3", {}, chosen.label, h("small", { class: "note" }, ` ${chosen.name}`)),
     own.length > 0 && h("details", { class: "strip" }, h("summary", {}, `「${group?.title ?? chosen.group}」这一类的快捷操作（${own.length} 项）`), groupActions(own, remount)),
-    h("p", { class: "note" }, `${chosen.rows} 行，每行 ${chosen.fields} 个字段。日文旁边的中文是汉化译文，只帮着看，改的是日文原值。点一行进去改。`),
+    h("p", { class: "note" }, `${chosen.rows} 行，每行 ${chosen.fields} 个字段。日文和编号前面的字是它在游戏里的叫法（译文，或者编号指的那样东西的名字），只帮着看，改的还是后面的原值；搜索两边都认。点一行进去改。`),
     h(
       "div",
       { class: "row" },
@@ -303,13 +321,13 @@ async function resources() {
 }
 
 async function drawRow(pane, chosen, key, remount) {
-  const opened = await api.get("content/row", { table: chosen.name, key: JSON.stringify(key) });
+  const [opened, picks] = await Promise.all([api.get("content/row", { table: chosen.name, key: JSON.stringify(key) }), resources()]);
   const kinds = new Map(opened.columns.map((column) => [column.name, column]));
+  const rids = new Set(picks.map((row) => row.rid));
   const saved = new Set(opened.changed);
   const staged = new Map();
   const tbody = h("tbody", {});
   const saveButton = button("保存这一行", save, "main");
-  const picks = kinds.size && [...kinds.values()].some((column) => column.kind === "resource") ? await resources() : [];
 
   function stage(path, value, shipped, row) {
     const same = value === shipped;
@@ -357,17 +375,23 @@ async function drawRow(pane, chosen, key, remount) {
     return { node: input, put: (value) => (input.value = value) };
   }
 
-  function leaf(name, path, shipped, current, depth) {
-    const column = depth === 0 ? kinds.get(name) : null;
-    const locked = depth === 0 && name in key;
-    const kind = column?.kind ?? kindOf(shipped);
-    const said = depth === 0 ? opened.spoken[name] : null;
+  // A field goes by its label, with the name the data uses after it; an entry of a list by its place.
+  function stepWords(step) {
+    if (typeof step === "number") return [placed(step)];
+    const label = fieldLabel(step);
+    return label === step ? [step] : [label, step];
+  }
+
+  function leaf(step, path, shipped, current, depth) {
+    const column = depth === 0 ? kinds.get(step) : null;
+    const locked = depth === 0 && step in key;
+    const kind = column?.kind ?? (rids.has(shipped) ? "resource" : kindOf(shipped));
+    const [label, raw] = stepWords(step);
     const row = h("tr", { "data-marked": current !== shipped });
     const made = locked ? null : control(kind, shipped, current, (value) => stage(path, value, shipped, row));
-    const label = column && column.label !== column.name ? [column.label, h("small", { class: "note" }, ` ${column.name}`)] : String(name);
     row.append(
-      h("td", { style: `--depth: ${depth}` }, label),
-      h("td", {}, String(shipped), said && h("span", { class: "said" }, said)),
+      h("td", { style: `--depth: ${depth}` }, label, raw && h("small", { class: "note" }, ` ${raw}`)),
+      h("td", {}, hinted(String(shipped), opened.hints[path])),
       h("td", {}, made?.node ?? h("span", { class: "note" }, "用来找到这一行，不能改")),
       h(
         "td",
@@ -386,11 +410,10 @@ async function drawRow(pane, chosen, key, remount) {
     return { visible: () => [row] };
   }
 
-  function group(name, path, shipped, current, depth) {
+  function group(step, path, shipped, current, depth) {
     const touched = [...saved].some((changed) => changed.startsWith(`${path}.`) || changed.startsWith(`${path}[`));
     const toggle = button("", flip, "quiet");
-    const column = depth === 0 ? kinds.get(name) : null;
-    const shownName = column && column.label !== column.name ? `${column.label} ${column.name}` : name;
+    const name = stepWords(step).join(" ");
     const head = h("tr", { class: "group", "data-marked": touched }, h("td", { style: `--depth: ${depth}`, colspan: 4 }, toggle));
     // A pool's prize list runs to thousands of values; they are built only when asked for.
     const node = {
@@ -406,7 +429,7 @@ async function drawRow(pane, chosen, key, remount) {
     };
 
     function label() {
-      toggle.textContent = `${node.open ? "收起" : "展开"} ${shownName}（${summary(shipped)}）`;
+      toggle.textContent = `${node.open ? "收起" : "展开"} ${name}（${summary(shipped)}）`;
       toggle.setAttribute("aria-expanded", String(node.open));
     }
 
@@ -425,10 +448,9 @@ async function drawRow(pane, chosen, key, remount) {
     const steps = Array.isArray(shipped) ? shipped.map((_, index) => index) : Object.keys(shipped);
     return steps.map((step) => {
       const path = joined(parent, step);
-      const name = typeof step === "number" ? `[${step}]` : step;
       return scalar(shipped[step])
-        ? leaf(name, path, shipped[step], current[step], depth)
-        : group(name, path, shipped[step], current[step], depth);
+        ? leaf(step, path, shipped[step], current[step], depth)
+        : group(step, path, shipped[step], current[step], depth);
     });
   }
 
@@ -451,7 +473,7 @@ async function drawRow(pane, chosen, key, remount) {
     pane,
     h("p", {}, h("a", { href: link(chosen.name) }, `回到「${chosen.label}」的列表`)),
     h("h3", {}, `${chosen.label}：${rowName(key, opened.title)}`),
-    JAPANESE.test(opened.title) && opened.spoken && Object.values(opened.spoken)[0] && h("p", { class: "note" }, "原值下面的中文是汉化译文，只帮着看，改的是日文原值。"),
+    Object.keys(opened.hints).length > 0 && h("p", { class: "note" }, "原值下面的小字是它在游戏里的叫法：日文的汉化译文，或者编号指的那样东西的名字。只帮着看，改的还是原值。"),
     h("div", { class: "row" }, saveButton, saved.size > 0 && button("这一行全部改回原值", resetRow, "danger")),
     picks.length > 0 && h("datalist", { id: "resources" }, picks.map((row) => h("option", { value: row.rid }, row.name))),
     h(
@@ -471,8 +493,9 @@ export const content = {
   title: "内容",
   async mount(root, argument) {
     const [name, ...rest] = argument.split("/");
-    const { groups, tables } = await api.get("content");
+    const { groups, tables, fields } = await api.get("content");
     labels = new Map(tables.map((row) => [row.name, row.label]));
+    fieldNames = fields;
     groupsList = groups;
     tablesList = tables;
     const chosen = tables.find((entry) => entry.name === name);

@@ -98,6 +98,16 @@ class Resources:
     )
     _unit_id = re.compile(r"unit\.card\.([1-9][0-9]*)\Z")
     _bom_id = re.compile(r"bom\.card\.([1-9][0-9]*)\Z")
+    # An item's name is its whole id already; any category not listed is a kind of wallet.
+    _prefixes = {
+        "item": "",
+        "unit": "unit.card.",
+        "equip": "item.equip.",
+        "attachable": "skill.attachable.",
+        "bom": "bom.card.",
+        "bonus_pass": "bonus_pass.",
+        "loginbonus": "loginbonus.",
+    }
 
     def __init__(self, masters, config, mailbox, progression):
         self.masters = masters
@@ -275,6 +285,11 @@ class Resources:
         self._refresh()
         return sorted(self._definitions)
 
+    @classmethod
+    def rid_of(cls, category: str, name: str) -> str:
+        prefix = cls._prefixes.get(category)
+        return f"wallet.{category}.{name}" if prefix is None else f"{prefix}{name}"
+
     def reward_order(self, row: dict) -> dict | None:
         self._refresh()
         category, name = row["m_walletCategory"], row["m_walletName"]
@@ -283,20 +298,7 @@ class Resources:
         amount = self._quantity(row["m_count"])
         if not amount:
             return None
-        if category == "item":
-            rid = name
-        elif category == "unit":
-            rid = f"unit.card.{name}"
-        elif category == "equip":
-            rid = f"item.equip.{name}"
-        elif category == "attachable":
-            rid = f"skill.attachable.{name}"
-        elif category in ("bonus_pass", "loginbonus"):
-            rid = f"{category}.{name}"
-        elif category == "bom":
-            rid = f"bom.card.{name}"
-        else:
-            rid = f"wallet.{category}.{name}"
+        rid = self.rid_of(category, name)
         self._resolve(rid)
         return {"rid": rid, "val": amount}
 

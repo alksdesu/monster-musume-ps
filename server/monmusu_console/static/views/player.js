@@ -1,14 +1,22 @@
-import { api, attempt, button, field, fill, h, outcomeText, receipt, table } from "../app.js";
+import { api, attempt, button, field, fill, h, named, outcomeText, receipt, table } from "../app.js";
 import { chosenSave } from "./profiles.js";
 
 const DELIVERIES = { inbox: "放进礼物箱", direct: "直接入账，超出上限的部分进礼物箱" };
 
-function rewardRow(remove) {
-  const rid = h("input", { type: "text", list: "resources", size: 34, placeholder: "wallet.point.gold" });
+// The box holds the id the server takes; the name beside it says what was picked.
+function rewardRow(names, remove) {
+  const rid = h("input", { type: "text", list: "resources", size: 34, placeholder: "输入名称来挑，如 金币" });
   const amount = h("input", { type: "number", min: 1, value: 1 });
-  const row = h("div", { class: "row" }, field("资源", rid), field("数量", amount), button("去掉这一项", () => remove(row)));
+  const picked = h("span", { class: "note", "aria-live": "polite" });
+  rid.addEventListener("input", () => (picked.textContent = names.get(rid.value.trim()) ?? ""));
+  const row = h("div", { class: "row" }, field("资源", rid), field("数量", amount), button("去掉这一项", () => remove(row)), picked);
   row.order = () => ({ rid: rid.value.trim(), val: Number(amount.value) });
   return row;
+}
+
+function sectionName(row) {
+  const title = row.title === row.name ? row.name : `${row.title} ${row.name}`;
+  return `${title}${row.size == null ? "" : `（${row.size} 项）`}${row.synced ? "" : "，不走同步"}`;
 }
 
 export const player = {
@@ -22,6 +30,7 @@ export const player = {
     const { profile, picker } = chosen;
     const profiles = (await api.get("saves")).saves.map((row) => row.profile);
     const [summary, resources] = await Promise.all([api.get("player", { profile }), api.get("resources")]);
+    const names = new Map(resources.rows.map((row) => [row.rid, row.name]));
 
     async function reload(text) {
       await player.mount(fill(root), profile);
@@ -29,7 +38,7 @@ export const player = {
     }
 
     async function setBalance(row, input) {
-      const body = { profile, rid: `wallet.${row.category}.${row.name}`, value: Number(input.value) };
+      const body = { profile, rid: row.rid, value: Number(input.value) };
       const outcome = await attempt(() => api.post("player/balance", body));
       if (outcome) reload(outcomeText(outcome));
     }
@@ -42,7 +51,7 @@ export const player = {
     }
 
     const rewards = h("div", {});
-    const addReward = () => rewards.append(rewardRow((row) => rewards.children.length > 1 && row.remove()));
+    const addReward = () => rewards.append(rewardRow(names, (row) => rewards.children.length > 1 && row.remove()));
     addReward();
     const delivery = h("select", {}, Object.entries(DELIVERIES).map(([value, text]) => h("option", { value }, text)));
     const message = h("input", { type: "text", size: 40, placeholder: "礼物箱里显示的说明，可不填" });
@@ -60,13 +69,7 @@ export const player = {
     }
 
     const editor = h("textarea", { spellcheck: "false", "aria-label": "原始数据" });
-    const section = h(
-      "select",
-      {},
-      summary.sections.map((row) =>
-        h("option", { value: row.name }, `${row.name}${row.size == null ? "" : `（${row.size} 项）`}${row.synced ? "" : "，不走同步"}`),
-      ),
-    );
+    const section = h("select", {}, summary.sections.map((row) => h("option", { value: row.name }, sectionName(row))));
 
     async function openSection() {
       const loaded = await attempt(() => api.get("player/section", { profile, name: section.value }));
@@ -94,7 +97,7 @@ export const player = {
       h("h3", {}, "持有的货币与券"),
       table(
         [
-          { title: "资源", cell: (row) => `wallet.${row.category}.${row.name}` },
+          { title: "资源", cell: (row) => named(row.name, row.rid) },
           { title: "数量", cell: (row) => (row.input = h("input", { type: "number", min: 0, value: row.val })) },
           { title: "", cell: (row) => button("改成这个数", () => setBalance(row, row.input)) },
         ],
@@ -102,6 +105,7 @@ export const player = {
         "这个存档还没有任何货币记录，可以在下面发放。",
       ),
       h("h3", {}, "发放奖励"),
+      h("p", { class: "note" }, "货币、道具、装备、技能插件、角色、召唤物都能发。在「资源」里输入名称从列表里挑；挑中后框里是它的编号，名称显示在这一行的末尾。"),
       h("datalist", { id: "resources" }, resources.rows.map((row) => h("option", { value: row.rid }, row.name))),
       rewards,
       h("div", { class: "row" }, button("再加一项", addReward)),

@@ -146,10 +146,16 @@ export function struck(text) {
   return h("s", { class: "struck" }, text);
 }
 
+// What the game calls a thing comes first; the value kept for it in the data follows, set back.
+export function named(name, source) {
+  if (!name) return source;
+  return h("span", { class: "spoken" }, h("span", { class: "said" }, name), " ", h("span", { class: "source" }, source));
+}
+
 export function outcomeText(outcome) {
   const parts = [outcome.synced ? "改动会随该玩家的下一次请求同步到客户端。" : ""];
   if (outcome.dropped) parts.push("有数据被删除，客户端要回标题重进才会消失。");
-  if (outcome.unsynced?.length) parts.push(`${outcome.unsynced.join("、")} 不走同步，客户端下次读取时才会看到。`);
+  if (outcome.unsynced?.length) parts.push(`${outcome.unsynced.map((section) => section.title).join("、")} 不走同步，客户端下次读取时才会看到。`);
   return parts.filter(Boolean).join("") || "已保存。";
 }
 

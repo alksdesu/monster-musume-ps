@@ -19,6 +19,15 @@ FOREVER = "2999/12/31 23:59:59"
 PROFILE, OTHER = "dmm:tester", "dmm:other"
 GOLD = "wallet.point.gold"
 BINGO = {"name": "bingo", "kind": "bingo", "ids": [10], "end": FOREVER}
+FIRST_BINGO = {**BINGO, "ids": [1]}
+TRANSLATED = {
+    "ゴールドコイン": "金币",
+    "ケンタウロス娘": "半人马娘",
+    "エテジア": "艾特吉亚",
+    "初回ビンゴキャンペーン": "首次宾果活动",
+    "幻獣石(無償)": "幻兽石(无偿)",
+    "スタートダッシュガチャメダル": "起点冲刺扭蛋奖章",
+}
 
 
 @pytest.fixture(autouse=True)
@@ -56,6 +65,17 @@ async def post(panel, path, body, expect=200):
 
 def gold(state):
     return next(row["val"] for row in state["wallets"] if row["name"] == "gold")
+
+
+async def translate(panel, tmp_path, pairs: dict) -> None:
+    workspace = tmp_path / "localization"
+    workspace.mkdir()
+    rows = [
+        json.dumps({"source": source, "target": target}, ensure_ascii=False)
+        for source, target in pairs.items()
+    ]
+    (workspace / "zh-Hans.jsonl").write_text("\n".join(rows) + "\n", encoding="utf-8")
+    await post(panel, "language", {"code": "zh-Hans"})
 
 
 async def test_the_console_only_answers_its_own_address(panel):
@@ -248,10 +268,16 @@ async def test_player_sections_can_be_read_and_replaced(panel):
     assert summary["player"]["player_code"]
     kinds = {row["name"]: row for row in summary["sections"]}
     assert kinds["wallets"]["synced"] and not kinds["inbox"]["synced"]
+    assert kinds["wallets"]["title"] == "货币与券"
+    assert all(row["title"] != row["name"] for row in summary["sections"])
     wallets = (await get(panel, "player/section", profile=PROFILE, name="wallets"))[
         "value"
     ]
-    assert wallets == summary["wallets"]
+    assert [(row["rid"], row["val"]) for row in summary["wallets"]] == [
+        (f"wallet.{row['category']}.{row['name']}", row["val"]) for row in wallets
+    ]
+    held = {row["rid"]: row["name"] for row in summary["wallets"]}
+    assert held[GOLD] == "ゴールドコイン" and all(held.values())
     for row in wallets:
         if row["name"] == "gold":
             row["val"] = 4242
@@ -294,7 +320,7 @@ async def test_removed_rows_and_unsynced_sections_are_pointed_out(panel):
     assert outcome == {
         "synced": False,
         "dropped": False,
-        "unsynced": ["home_visited_at"],
+        "unsynced": [{"name": "home_visited_at", "title": "上次进首页的时间"}],
     }
 
 
@@ -325,7 +351,7 @@ async def test_gifts_arrive_directly_or_in_the_present_box(panel):
     assert gold(await runtime.store.read(OTHER)) == before + 30
     boxed = {**gift, "profiles": [OTHER], "delivery": "inbox", "message": "おまけ"}
     outcome = (await post(panel, "player/grant", boxed))[OTHER]
-    assert outcome["unsynced"] == ["inbox"]
+    assert outcome["unsynced"] == [{"name": "inbox", "title": "礼物箱"}]
     letter = (await runtime.store.read(OTHER))["inbox"][-1]
     assert letter["reward"] == {"rid": GOLD, "val": 30}
     assert letter["message"] == "おまけ" and letter["tags"][0] == "console.gift"
@@ -340,8 +366,38 @@ async def test_gifts_arrive_directly_or_in_the_present_box(panel):
     mixed = {**gift, "profiles": [PROFILE, "dmm:nobody"]}
     await post(panel, "player/grant", mixed, expect=404)
     assert gold(await runtime.store.read(PROFILE)) == held
-    rids = {row["rid"]: row["name"] for row in (await get(panel, "resources"))["rows"]}
-    assert rids[GOLD] and "unit.card.1" in rids
+
+
+async def test_every_resource_goes_by_the_name_the_game_gives_it(panel):
+    rows = (await get(panel, "resources"))["rows"]
+    names = {row["rid"]: row["name"] for row in rows}
+    assert len(names) == len(rows) and all(names.values())
+    assert names[GOLD] == "ゴールドコイン"
+    assert names["item.material.Red1"] == "火の小結晶"
+    assert names["item.equip.1000"] == "DM_鉄の剣"
+    assert names["skill.attachable.1001"] == "HP強化 I"
+    assert names["unit.card.1"] == "ケンタウロス娘 エテジア"
+    assert names["bom.card.9001"] == "獣神 ヴィヴィヴァーチェ"
+    assert names["bonus_pass.point.2"] == "妖怪ミッションパス MP"
+    assert names["bonus_pass.unlock_pass.2-2"] == "妖怪ミッションパス ミッションパス"
+    assert names["loginbonus.unlock.117"].endswith("ログインボーナス")
+    assert names["stamina.quest"] == "スタミナ"
+
+
+async def test_names_follow_the_chosen_language(panel, tmp_path):
+    await translate(panel, tmp_path, TRANSLATED)
+    names = {row["rid"]: row["name"] for row in (await get(panel, "resources"))["rows"]}
+    assert names[GOLD] == "金币" and names["unit.card.1"] == "半人马娘 艾特吉亚"
+    assert names["item.material.Red1"] == "火の小結晶"
+    summary = await get(panel, "player", profile=PROFILE)
+    assert {row["rid"]: row["name"] for row in summary["wallets"]}[GOLD] == "金币"
+    found = await get(panel, "schedule/catalog", kind="bingo", q="首次宾果")
+    assert [(row["id"], row["name"]) for row in found["rows"]] == [(1, "首次宾果活动")]
+    shipped = await get(panel, "schedule/catalog", kind="bingo", q="初回ビンゴ")
+    assert [row["id"] for row in shipped["rows"]] == [1]
+    document = {"activities": [FIRST_BINGO], "rows": []}
+    saved = await post(panel, "schedule", {"document": document})
+    assert saved["names"] == {"bingo": {"1": "首次宾果活动"}}
 
 
 async def test_the_schedule_is_previewed_saved_and_kept_in_history(panel):
@@ -349,14 +405,27 @@ async def test_the_schedule_is_previewed_saved_and_kept_in_history(panel):
     opened = await get(panel, "schedule")
     assert opened["document"] == {"activities": [], "rows": []}
     assert "gacha" in opened["kinds"] and opened["error"] is None
+    assert opened["names"] == {}
     preview = await post(panel, "schedule/preview", {"entry": BINGO})
-    assert preview["tables"]["bingo_data"] == 1
-    assert preview["sample"][0]["table"] == "bingo_data"
+    tables = {row["name"]: row for row in preview["tables"]}
+    assert tables["bingo_data"] == {"name": "bingo_data", "label": "宾果", "rows": 1}
+    sheet = preview["sample"][0]
+    assert (sheet["table"], sheet["label"], sheet["key"]) == (
+        "bingo_data",
+        "宾果",
+        {"id": 10},
+    )
+    assert sheet["title"] == runtime.masters.lookup("bingo_data", "id", 10)["name"]
+    assert sheet["fields"] == [{"name": "end_dt", "label": "结束", "value": FOREVER}]
+    # A wallet is found by its name field, which is a key and not what the game calls it.
+    ticket = next(row for row in preview["sample"] if row["table"] == "wallet_template")
+    assert ticket["label"] == "货币与券" and ticket["title"] != ticket["key"]["name"]
     await post(panel, "schedule/preview", {"entry": {**BINGO, "ids": [99]}}, 400)
     document = {"activities": [BINGO], "rows": []}
     saved = await post(panel, "schedule", {"document": document})
     assert saved["document"] == document and saved["revision"] != opened["revision"]
     assert saved["tables"]["bingo_data.asset"] == 1
+    assert saved["names"] == {"bingo": {"10": sheet["title"]}}
     assert runtime.masters.lookup("bingo_data", "id", 10)["end_dt"] == FOREVER
     history = list((panel.folders.backups / "config/schedule.json").glob("*.json"))
     assert len(history) == 1

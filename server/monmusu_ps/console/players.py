@@ -1,14 +1,16 @@
+from . import catalog
 from .editing import Editing, SYNCED
+from .naming import Names
 
 
 SOURCE = "console.gift"
 DIRECT, INBOX = "direct", "inbox"
-UNIT_PREFIX = "unit.card."
 
 
 class Players:
-    def __init__(self, runtime):
+    def __init__(self, runtime, names: Names):
         self.runtime = runtime
+        self.names = names
         self.editing = Editing(runtime)
 
     def _known(self, profile: str) -> str:
@@ -19,20 +21,23 @@ class Players:
 
     async def summary(self, profile: str) -> dict:
         state = await self.runtime.store.read(self._known(profile))
+        named = self.names.reading()
         sections = [
             {
                 "name": name,
+                "title": catalog.section_label(name),
                 "kind": type(value).__name__,
                 "size": len(value) if isinstance(value, list | dict) else None,
                 "synced": name in SYNCED,
             }
             for name, value in state.items()
         ]
-        return {
-            "player": state["player"],
-            "wallets": state["wallets"],
-            "sections": sections,
-        }
+        wallets = [
+            {"rid": rid, "name": named.resource(rid), "val": row["val"]}
+            for row in state["wallets"]
+            for rid in (f"wallet.{row['category']}.{row['name']}",)
+        ]
+        return {"player": state["player"], "wallets": wallets, "sections": sections}
 
     async def section(self, profile: str, name: str):
         state = await self.runtime.store.read(self._known(profile))
@@ -92,22 +97,3 @@ class Players:
                     outcome["deliveries"] = granted.deliveries
             outcomes[profile] = outcome
         return outcomes
-
-    def catalog(self) -> list[dict]:
-        masters = self.runtime.masters
-        names = {
-            f"wallet.{row['category']}.{row['name']}": row["wallet_name"]
-            for row in masters.table("wallet_template")
-        }
-        rows = [
-            {"rid": rid, "name": names.get(rid, "")}
-            for rid in self.runtime.resources.rids()
-        ]
-        rows += [
-            {
-                "rid": f"{UNIT_PREFIX}{card['id']}",
-                "name": f"{card['nickname']} {card['charaName']}",
-            }
-            for card in masters.assets("unitcard")
-        ]
-        return rows

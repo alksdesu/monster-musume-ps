@@ -231,14 +231,17 @@ class Schedule:
         return TABLES[name].rows(outer) if name in TABLES else outer
 
     @staticmethod
-    def _pick(rows: list[dict], name: str, **key) -> dict:
+    def _pick(rows: list[dict], name: str, /, **key) -> dict:
         for row in rows:
             if all(row[field] == value for field, value in key.items()):
                 return row
         raise ValueError(f"The schedule names a missing {name} row: {key}")
 
-    def _row(self, name: str, **key) -> dict:
+    def _row(self, name: str, /, **key) -> dict:
         return self._pick(self._table(name), name, **key)
+
+    def row(self, name: str, key: dict) -> dict:
+        return self._row(name, **key)
 
     def _wallet(self, category: str, name: str, window: _Window):
         for row in self._table("wallet_template"):

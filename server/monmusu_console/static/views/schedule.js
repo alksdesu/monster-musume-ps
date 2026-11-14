@@ -33,14 +33,13 @@ function setSide(entry, name, text) {
   else entry[name] = value === UNBOUNDED ? "" : value;
 }
 
-function scope(entry) {
-  if (entry.all === true) return "历来全部（有结束时间的）";
-  if ("running_at" in entry) return `${entry.running_at} 时在期的全部`;
-  return entry.ids.length > 4 ? `${entry.ids.slice(0, 4).join("、")} 等 ${entry.ids.length} 个` : entry.ids.join("、");
-}
-
 function window_(row) {
   return `${row.start || "不限"} 至 ${row.end || "不限"}`;
+}
+
+function rowName(row) {
+  const where = Object.values(row.key).join(" / ");
+  return row.title ? `${row.title}（${where}）` : where;
 }
 
 export const schedule = {
@@ -54,6 +53,19 @@ export const schedule = {
     const previewBox = h("div", {});
     const catalogBox = h("div", {});
     const browse = { kind: "event", status: "ended", q: "", offset: 0 };
+    // An entry keeps ids; what each is called comes with the document and with every row picked from the catalog.
+    const names = {};
+    const learn = (kind, called) => Object.assign((names[kind] ??= {}), called);
+    const learnAll = (listed) => Object.entries(listed).forEach(([kind, called]) => learn(kind, called));
+    learnAll(loaded.names);
+
+    function scope(entry) {
+      if (entry.all === true) return "历来全部（有结束时间的）";
+      if ("running_at" in entry) return `${[entry.running_at].flat().join("、")} 时在期的全部`;
+      const called = entry.ids.map((id) => names[entry.kind]?.[id] || String(id));
+      const shown = called.length > 4 ? `${called.slice(0, 4).join("、")} 等 ${called.length} 个` : called.join("、");
+      return h("span", { title: `编号：${entry.ids.join("、")}` }, shown);
+    }
 
     function touch() {
       dirty = true;
@@ -75,6 +87,7 @@ export const schedule = {
       const saved = await attempt(() => api.post("schedule", { document: draft }), "排期已保存并生效。");
       if (!saved) return;
       loaded = saved;
+      learnAll(saved.names);
       draft = structuredClone(saved.document);
       dirty = false;
       drawHead();
@@ -88,14 +101,14 @@ export const schedule = {
       fill(previewBox, h("h3", {}, `「${entry.name || KINDS[entry.kind]}」会改写的行`),
         table(
           [
-            { title: "表", cell: (row) => row.table },
-            { title: "行", cell: (row) => Object.values(row.key).join(" / ") },
-            { title: "改成", cell: (row) => Object.entries(row.fields).map(([name, value]) => h("div", {}, `${name} = ${value || "不限"}`)) },
+            { title: "表", cell: (row) => h("span", { title: row.table }, row.label) },
+            { title: "行", cell: rowName },
+            { title: "改成", cell: (row) => row.fields.map((field) => h("div", { title: field.name }, `${field.label}：${field.value || "不限"}`)) },
           ],
           result.sample,
           "这个条目不会改写任何行：它指向的内容本来就没有结束时间，或者已经比条目的结束时间更晚。",
         ),
-        h("p", { class: "note" }, `合计：${Object.entries(result.tables).map(([name, count]) => `${name} ${count} 行`).join("，") || "0 行"}。每张表最多列出前 20 行。`),
+        h("p", { class: "note" }, `合计：${result.tables.map((listed) => `${listed.label} ${listed.rows} 行`).join("，") || "0 行"}。每张表最多列出前 20 行。`),
       );
     }
 
@@ -166,7 +179,10 @@ export const schedule = {
             {
               title: "",
               cell: (row) =>
-                button("加入排期，一直开放", () => add({ name: row.name, kind: browse.kind, ids: [row.id], end: FOREVER, enabled: true })),
+                button("加入排期，一直开放", () => {
+                  learn(browse.kind, { [row.id]: row.name });
+                  add({ name: row.name, kind: browse.kind, ids: [row.id], end: FOREVER, enabled: true });
+                }),
             },
           ],
           listed.rows,

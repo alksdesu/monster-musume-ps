@@ -52,6 +52,12 @@ CATALOG = (
         "道具",
     ),
     Shortcut(
+        "subskills_all",
+        "技能插件全开",
+        "把每一种技能插件都放进存档各一个，已有的不动。",
+        "技能插件",
+    ),
+    Shortcut(
         "stories_all",
         "剧情全开（含 H）",
         "角色全开、皮肤全开，把每个角色的等级拉到剧情要求，并把全部剧情登记为可看。",
@@ -81,8 +87,8 @@ CATALOG = (
     Shortcut(
         "items_max",
         "道具全满",
-        "素材、EX 技能钥匙、配方、装备、皮肤、副技能全部补到持有上限。",
-        "道具、装备、副技能",
+        "素材、EX 技能钥匙、配方、装备、皮肤、技能插件全部补到持有上限。",
+        "道具、装备、技能插件",
     ),
     Shortcut(
         "passes_all",
@@ -136,9 +142,10 @@ class Shortcuts:
             held.get((row["category"], row["name"]), 0) >= row["val_cap"]
             for row in wallets
         )
-        skins = self._skins()
+        skins, sub_skills = self._skins(), self._sub_skills()
         items = {row["id"]: row["val"] for row in state["items"]}
         held_skins = sum(items.get(rid, 0) > 0 for rid in skins)
+        held_sub_skills = sum(items.get(rid, 0) > 0 for rid in sub_skills)
         stamina = next(
             row for row in state["modules"]["stamina"] if row["section"] == "quest"
         )
@@ -158,6 +165,7 @@ class Shortcuts:
             },
             "boms": {"owned": len(boms), "total": len(masters.assets("bomcard"))},
             "skins": {"held": held_skins, "total": len(skins)},
+            "subskills": {"held": held_sub_skills, "total": len(sub_skills)},
             "stories": {
                 "open": sum(identity in recorded for identity in stories),
                 "read": sum(
@@ -220,6 +228,10 @@ class Shortcuts:
         )
         return [rid for rid in dict.fromkeys(rids) if rid in known]
 
+    def _sub_skills(self) -> list[str]:
+        rids = self.runtime.resources.rids()
+        return [rid for rid in rids if rid.startswith(SUB_SKILL)]
+
     def _grant_missing(self, state: dict, rids, now: int) -> int:
         resources, given = self.runtime.resources, 0
         for rid in rids:
@@ -263,6 +275,9 @@ class Shortcuts:
 
     def skins_all(self, state: dict, now: int) -> dict:
         return {"given": self._grant_missing(state, self._skins(), now)}
+
+    def subskills_all(self, state: dict, now: int) -> dict:
+        return {"given": self._grant_missing(state, self._sub_skills(), now)}
 
     def stories_all(self, state: dict, now: int) -> dict:
         added = self.units_all(state, now)["added"]
@@ -371,7 +386,7 @@ class Shortcuts:
             row["item_id"]
             for row in [*masters.table("item_template"), *masters.table("equipment")]
         ]
-        rids.extend(rid for rid in resources.rids() if rid.startswith(SUB_SKILL))
+        rids.extend(self._sub_skills())
         for rid in dict.fromkeys(rids):
             room = resources.room(state, rid, now)
             if room > 0:

@@ -32,6 +32,7 @@ async def test_every_group_offers_its_openers_switches_and_links(panel):
     assert gacha["opened"] is False and gacha["picked"] == []
     assert listed(actions, FREE, "gacha")["on"] is False
     assert listed(actions, "stories_all", "story")["page"] == "shortcuts"
+    assert listed(actions, "subskills_all", "item")["title"] == "技能插件全开"
 
 
 async def test_opening_all_of_a_kind_keeps_everything_running(panel):
