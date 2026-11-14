@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+.venv/
+venv/
+
+# .NET
+client-plugin/bin/
+client-plugin/obj/
+client-plugin/tests/
+observer/
+
+# 本机运行时产生：存档、备份、日志
+saves/
+backups/
+logs/
+
+# 游戏资源，各自从游戏客户端或官方资源服务器取得，不随仓库分发
+masterdata/
+scenarios/
+
+# 翻译工具的中间产物，可由 extract / translate / status 重新生成
+localization/source.jsonl
+localization/report.json
+localization/*.partial
+
+# 逆向材料与开发文档，只留在开发机
+decompile/
+captures/
+tools/reverse/
+docs/
+protocol/PROTOCOL.md
+protocol/enums.json
+protocol/server_internals.json
+
+# 编辑器
+.idea/
+.vscode/
+*.swp
+Thumbs.db
+.DS_Store

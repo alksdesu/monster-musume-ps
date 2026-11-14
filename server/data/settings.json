@@ -1,0 +1,244 @@
+{
+  "host": "127.0.0.1",
+  "port": 18621,
+  "public_url": "http://127.0.0.1:18621",
+  "asset_version": "469259656c",
+  "initial_nickname": "ご主人",
+  "platform_app_id": "749446",
+  "platform_point_balance": 9999999,
+  "initial_stamina": "capacity",
+  "stamina_max_capacity": 999,
+  "farming_interval_min": 1,
+  "farming_term_min": 1800,
+  "gacha": {
+    "hidden_ids": [],
+    "rates": {
+      "R": 55.0,
+      "HR": 30.0,
+      "SR": 12.0,
+      "SSR": 3.0
+    },
+    "other_rate": 10.0,
+    "pickup_weight": 40.0,
+    "history": 30
+  },
+  "shop": {
+    "first_purchase": {
+      "no": 10,
+      "start_at": 1792378800,
+      "tab": 101,
+      "min_price": 600,
+      "unit_card": 69,
+      "message": "初購入特典"
+    }
+  },
+  "periods": [],
+  "limits": [],
+  "prefs": {
+    "game_option": "{\r\n    \"battlelog_share_ckeck\": false\r\n}",
+    "subskill_favorite": "{\r\n    \"skill_ids\": []\r\n}",
+    "battle_log_mission": "{}",
+    "help_displayed": "{}",
+    "beginner_panel_mission_complete": "{\r\n    \"displayed_panel_first\": false,\r\n    \"displayed_panel_second\": false,\r\n    \"displayed_panel_third\": false\r\n}",
+    "tutorial_browsing": "{\r\n    \"class_change_unlock\": false,\r\n    \"boss_challenge_unlock\": false,\r\n    \"sp_challenge_unlock\": false,\r\n    \"rental_unlock\": false\r\n}",
+    "panel_mission_complete": "{\r\n    \"displayed_panel_complete\": [],\r\n    \"displayed_panel_unlock\": []\r\n}",
+    "toggle_displayed": "{\r\n    \"displayed_SecretQuestRankingView\":true\r\n}",
+    "home_favorite": "{\r\n    \"fav_unit_card\": 22,\r\n    \"rand\": false,\r\n    \"my_page_unit_cards\": [22],\r\n    \"home_prefs_ver\":2\r\n}",
+    "bom_cutin": "{}"
+  },
+  "maintenance_mode": "",
+  "resources": {
+    "free_costs": false,
+    "attachable_capacity": 9999,
+    "unit_capacity": 1500,
+    "duplicate_unit": {
+      "potential_cap": 5,
+      "compensation_rid": "wallet.gachamedal.gmedal_common",
+      "compensation": {
+        "R": 5,
+        "HR": 20,
+        "SR": 100,
+        "SSR": 500
+      }
+    }
+  },
+  "mail": {
+    "inbox": "main",
+    "lifetime_seconds": 2592000,
+    "debug_post": false,
+    "archive": {
+      "inbox": "history",
+      "lifetime_seconds": 2592000,
+      "capacity": 100
+    }
+  },
+  "start_dash": {
+    "gacha_seconds": 432000,
+    "panel_days": 8
+  },
+  "comeback": {
+    "with_login_bonus": true,
+    "away_days": 14,
+    "gacha_seconds": 432000
+  },
+  "bingo": {
+    "follow_master_schedule": false,
+    "max_draws": 10
+  },
+  "votes": {
+    "campaigns": [
+      {
+        "campaign_id": 1,
+        "round_no": 1,
+        "start_at": "2022/03/14 13:00:00",
+        "end_at": "2099/12/31 04:59:59",
+        "tickets": 3,
+        "message": "",
+        "candidates": null,
+        "candidate_rarities": [
+          "SSR"
+        ],
+        "rewards": [
+          {
+            "rid": "wallet.point.gold",
+            "val": 10000
+          }
+        ],
+        "ranking_rev": null,
+        "base_votes": {},
+        "ranking_size": 30
+      }
+    ]
+  },
+  "mileage_programs": {},
+  "sealed_chara": {
+    "follow_master_schedule": false
+  },
+  "sugoroku": {
+    "enforce_master_dates": false,
+    "charge_tickets": true,
+    "multiply_by_cost_batch": true,
+    "boss_skip_requires_clear": true,
+    "random_cell_weights": {},
+    "lap_overflow": "last",
+    "delivery": "inbox",
+    "chain_limit": 16,
+    "battle_cell_rewards": {}
+  },
+  "subdue_raid": {
+    "follow_master_schedule": false,
+    "everyone": {
+      "base": 0,
+      "multiplier": 10000
+    }
+  },
+  "event_growth": {
+    "follow_master_schedule": false,
+    "alternatives": {
+      "2": [
+        {
+          "rid": "wallet.unit_exp.ssr_all",
+          "val": 1
+        }
+      ],
+      "3": [
+        {
+          "rid": "wallet.gachamedal.gmedal_common",
+          "val": 100
+        }
+      ],
+      "4": [
+        {
+          "rid": "wallet.point.gold",
+          "val": 10000
+        }
+      ]
+    }
+  },
+  "data_link": {
+    "password_ttl_seconds": 86400,
+    "allow_linked_target": true,
+    "consume_password_on_exec": true
+  },
+  "vip": {
+    "point": 0,
+    "rank": 0,
+    "benefits": []
+  },
+  "dmm_premium": {
+    "member": false,
+    "rewards": []
+  },
+  "news": {
+    "items": []
+  },
+  "subskill_prizes": {
+    "weight": 10.0,
+    "limited_weight": 1.0,
+    "pity_weight": 0.5,
+    "drops_per_clear": 1
+  },
+  "tower": {
+    "rental_counts_as_member": false,
+    "factor_scale": {
+      "星獲得数": 1,
+      "編成人数": 100,
+      "出撃人数": 100,
+      "出撃トークン": 100,
+      "レンタル": 100
+    },
+    "daily_points": {
+      "enabled": true,
+      "multiplier": 1
+    }
+  },
+  "social": {
+    "recommend_limit": 20,
+    "selects_limit": 30
+  },
+  "battle_log": {
+    "keep": 20,
+    "days": 14,
+    "feed_limit": 50,
+    "scoped_by_follow": true
+  },
+  "serial_code": {
+    "accept_campaign_codes": true,
+    "invalid_attempts": 5,
+    "penalty_seconds": 3600,
+    "codes": {}
+  },
+  "quest_clear_sales": {
+    "ダンジョン準備パック": 10006,
+    "ボスチャレンジ準備パック": 10107,
+    "スペシャルチャレンジ準備パック": 10207
+  },
+  "tutorial_skip": {
+    "rating": 3,
+    "consume_stamina": true,
+    "random_rewards": true
+  },
+  "battle": {
+    "unit_points": 10,
+    "gold_multiplier": 1,
+    "rank_exp_multiplier": 1,
+    "unit_exp_multiplier": 1,
+    "failure_cost_percent": 0,
+    "endless_kill_cap": 999,
+    "hunt_score_mismatch": "log",
+    "hunt_aggregation": true
+  },
+  "retention": {
+    "completed_quest_transactions": 10,
+    "events": 200
+  },
+  "localization": {
+    "language": "zh-Hans"
+  },
+  "client": {
+    "dir": "../mnms_td_r18",
+    "mosaic": 0,
+    "font": "",
+    "font_family": "Microsoft YaHei,SimHei"
+  }
+}

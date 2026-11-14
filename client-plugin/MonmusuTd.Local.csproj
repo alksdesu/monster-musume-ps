@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>MonmusuTd.Local</AssemblyName>
+    <RootNamespace>MonmusuTd.Local</RootNamespace>
+    <Version>0.1.0</Version>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <ClientDir Condition="'$(ClientDir)' == ''">$(MSBuildProjectDirectory)\..\..\mnms_td_r18</ClientDir>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="src\*.cs" />
+    <Reference Include="$(ClientDir)\BepInEx\core\*.dll" Exclude="$(ClientDir)\BepInEx\core\dobby.dll" Private="false" />
+    <Reference Include="$(ClientDir)\BepInEx\interop\*.dll" Private="false" />
+  </ItemGroup>
+</Project>

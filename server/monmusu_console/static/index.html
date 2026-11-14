@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>魔物娘TD 控制台</title>
+  <link rel="stylesheet" href="static/console.css">
+</head>
+<body>
+  <header class="bar">
+    <h1>魔物娘TD 控制台</h1>
+    <div class="bar-state">
+      <a id="stamp" class="stamp" href="#overview" role="status" aria-live="polite"></a>
+      <p id="bar-line">正在读取服务器状态</p>
+    </div>
+    <div id="bar-actions" class="bar-actions"></div>
+  </header>
+  <div class="frame">
+    <nav id="rail" class="rail" aria-label="页面"></nav>
+    <main id="work" class="work" tabindex="-1">
+      <div id="receipt" class="receipt" role="status" aria-live="polite" hidden></div>
+      <div id="view"></div>
+    </main>
+  </div>
+  <script type="module" src="static/app.js"></script>
+</body>
+</html>

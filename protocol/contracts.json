@@ -1,0 +1,4116 @@
+{
+ "schema_version": 1,
+ "client": {
+  "game_assembly_sha256": "a80508594af1fa01efafe442daa59976de2b47b4c6bce1cf360947a8b92a8273",
+  "dump_cs_sha256": "d7ca7c13826eea45dc18cb7f7ff4af3398349a3813fbf45d9dc5eb75d3b95ca1"
+ },
+ "routes": [
+  {
+   "family": "ntd",
+   "endpoint": "appenv/ep-conf",
+   "method": "POST",
+   "protocol": 1,
+   "auth": false,
+   "request_class": "AppEndpointConfigRequest",
+   "request_model": "AppEndpointConfigRequest",
+   "response_models": {
+    "200": "AppEndpointConfigResponse200",
+    "400": "AppEndpointConfigResponse400"
+   },
+   "services": [
+    {
+     "name": "AppEndpointConfigRequestService",
+     "request_model": "NtdAppEndpointConfigRequest",
+     "response_model": "AppEndpointConfigResponse"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF22B60"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "asset_bundle/version",
+   "method": "POST",
+   "protocol": 1,
+   "auth": false,
+   "request_class": "AssetBundleVersionRequest",
+   "request_model": "AssetBundleVersionRequest",
+   "response_models": {
+    "200": "AssetBundleVersionResponse200",
+    "400": "AssetBundleVersionResponse400",
+    "503": "AssetBundleVersionResponse503"
+   },
+   "services": [
+    {
+     "name": "GetAssetBundleVersionRequestService",
+     "request_model": "NtdAssetBundleVersionRequest",
+     "response_model": "GetAssetBundleVersionResponse"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF239D0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "auth/credential/issue",
+   "method": "POST",
+   "protocol": 3,
+   "auth": false,
+   "request_class": "IssueClientCredentialRequest",
+   "request_model": "IssueClientCredentialRequest",
+   "response_models": {
+    "200": "IssueClientCredentialResponse200",
+    "400": "IssueClientCredentialResponse400",
+    "401": "IssueClientCredentialResponse401",
+    "503": "IssueClientCredentialResponse503"
+   },
+   "services": [
+    {
+     "name": "IssueClientCredentialRequestService",
+     "request_model": "NtdIssueClientCredentialRequest",
+     "response_model": "IssueClientCredentialResponse"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF9E3B0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "auth/handshake",
+   "method": "POST",
+   "protocol": 3,
+   "auth": false,
+   "request_class": "HandshakeRequest",
+   "request_model": "HandshakeRequest",
+   "response_models": {
+    "200": "HandshakeResponse200",
+    "400": "HandshakeResponse400",
+    "503": "HandshakeResponse503"
+   },
+   "services": [
+    {
+     "name": "HandshakeRequestService",
+     "request_model": "NtdHandshakeRequest",
+     "response_model": "HandshakeResponse"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF9CC20"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "auth/login/credential",
+   "method": "POST",
+   "protocol": 3,
+   "auth": false,
+   "request_class": "LoginByClientCredentialRequest",
+   "request_model": "LoginByClientCredentialRequest",
+   "response_models": {
+    "200": "LoginByClientCredentialResponse200",
+    "400": "LoginByClientCredentialResponse400",
+    "401": "LoginByClientCredentialResponse401",
+    "503": "LoginByClientCredentialResponse503"
+   },
+   "services": [
+    {
+     "name": "LoginByClientCredentialRequestService",
+     "request_model": "NtdLoginByClientCredentialRequest",
+     "response_model": "LoginByClientCredentialResponse"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFA2810"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "auth/login/dmm_gp",
+   "method": "POST",
+   "protocol": 3,
+   "auth": false,
+   "request_class": "LoginByDmmGamePlayerRequest",
+   "request_model": "LoginByDmmGamePlayerRequest",
+   "response_models": {
+    "200": "LoginByDmmGamePlayerResponse200",
+    "400": "LoginByDmmGamePlayerResponse400",
+    "401": "LoginByDmmGamePlayerResponse401",
+    "422": "LoginByDmmGamePlayerResponse422",
+    "503": "LoginByDmmGamePlayerResponse503"
+   },
+   "services": [
+    {
+     "name": "DMMGamePlayerLoginRequestService",
+     "request_model": "NtdLoginByDmmGamePlayerRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFA3C00"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "auth/set_api_token/dmm_gp",
+   "method": "POST",
+   "protocol": 3,
+   "auth": false,
+   "request_class": "SetTokenForDmmGamePlayerApiRequest",
+   "request_model": "SetTokenForDmmGamePlayerApiRequest",
+   "response_models": {
+    "200": "SetTokenForDmmGamePlayerApiResponse200",
+    "400": "SetTokenForDmmGamePlayerApiResponse400",
+    "401": "SetTokenForDmmGamePlayerApiResponse401",
+    "503": "SetTokenForDmmGamePlayerApiResponse503"
+   },
+   "services": [
+    {
+     "name": "SetTokenForDmmGamePlayerApiRequestService",
+     "request_model": "NtdSetTokenForDmmGamePlayerApiRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFC38C0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "auth/update_api_token/dmm_gp",
+   "method": "POST",
+   "protocol": 3,
+   "auth": false,
+   "request_class": "UpdateTokenForDmmGamePlayerApiRequest",
+   "request_model": "UpdateTokenForDmmGamePlayerApiRequest",
+   "response_models": {
+    "200": "UpdateTokenForDmmGamePlayerApiResponse200",
+    "400": "UpdateTokenForDmmGamePlayerApiResponse400",
+    "422": "UpdateTokenForDmmGamePlayerApiResponse422",
+    "503": "UpdateTokenForDmmGamePlayerApiResponse503"
+   },
+   "services": [
+    {
+     "name": "DMMGamePlayerUpdateAccessTokenRequestService",
+     "request_model": "NtdUpdateTokenForDmmGamePlayerApiRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFCE470"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "battle_log/",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetBattleLogRequest",
+   "request_model": "GetBattleLogRequest",
+   "response_models": {
+    "200": "GetBattleLogResponse200",
+    "400": "GetBattleLogResponse400",
+    "401": "GetBattleLogResponse401",
+    "503": "GetBattleLogResponse503"
+   },
+   "services": [
+    {
+     "name": "GetBattleLogRequestService",
+     "request_model": "NtdGetBattleLogRequest",
+     "response_model": "GetBattleLogResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF68550"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "battle_log/all",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetBattleLogAllRequest",
+   "request_model": "GetBattleLogAllRequest",
+   "response_models": {
+    "200": "GetBattleLogAllResponse200",
+    "400": "GetBattleLogAllResponse400",
+    "401": "GetBattleLogAllResponse401",
+    "503": "GetBattleLogAllResponse503"
+   },
+   "services": [
+    {
+     "name": "GetBattleLogAllRequestService",
+     "request_model": "NtdGetBattleLogAllRequest",
+     "response_model": "GetBattleLogAllResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF69180"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "battle_log/feed/list",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetSocialSharedLogFeedRequest",
+   "request_model": "GetSocialSharedLogFeedRequest",
+   "response_models": {
+    "200": "GetSocialSharedLogFeedResponse200",
+    "400": "GetSocialSharedLogFeedResponse400",
+    "401": "GetSocialSharedLogFeedResponse401",
+    "503": "GetSocialSharedLogFeedResponse503"
+   },
+   "services": [
+    {
+     "name": "GetSocialSharedLogFeedRequestService",
+     "request_model": "NtdGetSocialSharedLogFeedRequest",
+     "response_model": "GetSocialSharedLogFeedResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF91AD0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "battle_log/like",
+   "method": "PUT",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "LikeBattleLogRequest",
+   "request_model": "LikeBattleLogRequest",
+   "response_models": {
+    "200": "LikeBattleLogResponse200",
+    "400": "LikeBattleLogResponse400",
+    "404": "LikeBattleLogResponse404",
+    "503": "LikeBattleLogResponse503"
+   },
+   "services": [
+    {
+     "name": "LikeBattleLogRequestService",
+     "request_model": "NtdLikeBattleLogRequest",
+     "response_model": "LikeBattleLogResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF9FFA0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "battle_log/put",
+   "method": "PUT",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "PutBattleLogRequest",
+   "request_model": "PutBattleLogRequest",
+   "response_models": {
+    "200": "PutBattleLogResponse200",
+    "400": "PutBattleLogResponse400",
+    "503": "PutBattleLogResponse503"
+   },
+   "services": [
+    {
+     "name": "PutBattleLogRequestService",
+     "request_model": "NtdPutBattleLogRequest",
+     "response_model": "PutBattleLogResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFAF530"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "battle_log/share",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "ShareBattleLogRequest",
+   "request_model": "ShareBattleLogRequest",
+   "response_models": {
+    "200": "ShareBattleLogResponse200",
+    "400": "ShareBattleLogResponse400",
+    "401": "ShareBattleLogResponse401",
+    "404": "ShareBattleLogResponse404",
+    "503": "ShareBattleLogResponse503"
+   },
+   "services": [
+    {
+     "name": "ShareBattleLogRequestService",
+     "request_model": "NtdShareBattleLogRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFC4780"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "battle_log/unshare",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "UnshareBattleLogRequest",
+   "request_model": "UnshareBattleLogRequest",
+   "response_models": {
+    "200": "UnshareBattleLogResponse200",
+    "400": "UnshareBattleLogResponse400",
+    "401": "UnshareBattleLogResponse401",
+    "404": "UnshareBattleLogResponse404",
+    "503": "UnshareBattleLogResponse503"
+   },
+   "services": [
+    {
+     "name": "UnshareBattleLogRequestService",
+     "request_model": "NtdUnshareBattleLogRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFCA130"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "bingo/complete/receive",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "ReceiveCompleteRewardRequest",
+   "request_model": "ReceiveCompleteRewardRequest",
+   "response_models": {
+    "200": "ReceiveCompleteRewardResponse200",
+    "400": "ReceiveCompleteRewardResponse400",
+    "401": "ReceiveCompleteRewardResponse401",
+    "404": "ReceiveCompleteRewardResponse404",
+    "422": "ReceiveCompleteRewardResponse422",
+    "503": "ReceiveCompleteRewardResponse503"
+   },
+   "services": [
+    {
+     "name": "ReceiveCompleteRewardRequestService",
+     "request_model": "NtdReceiveCompleteRewardRequest",
+     "response_model": "ReceiveBingoRewardResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFB2FF0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "bingo/line/receive",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "ReceiveLineRewardRequest",
+   "request_model": "ReceiveLineRewardRequest",
+   "response_models": {
+    "200": "ReceiveLineRewardResponse200",
+    "400": "ReceiveLineRewardResponse400",
+    "401": "ReceiveLineRewardResponse401",
+    "404": "ReceiveLineRewardResponse404",
+    "422": "ReceiveLineRewardResponse422",
+    "503": "ReceiveLineRewardResponse503"
+   },
+   "services": [
+    {
+     "name": "ReceiveLineRewardRequestService",
+     "request_model": "NtdReceiveLineRewardRequest",
+     "response_model": "ReceiveBingoRewardResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFB48F0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "bingo/lottery",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "LotteryBingoRequest",
+   "request_model": "LotteryBingoRequest",
+   "response_models": {
+    "200": "LotteryBingoResponse200",
+    "400": "LotteryBingoResponse400",
+    "401": "LotteryBingoResponse401",
+    "404": "LotteryBingoResponse404",
+    "422": "LotteryBingoResponse422",
+    "503": "LotteryBingoResponse503"
+   },
+   "services": [
+    {
+     "name": "LotteryBingoRequestService",
+     "request_model": "NtdLotteryBingoRequest",
+     "response_model": "BingoLotteryResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFA5140"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "bingo/open",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "OpenBingoRequest",
+   "request_model": "OpenBingoRequest",
+   "response_models": {
+    "200": "OpenBingoResponse200",
+    "400": "OpenBingoResponse400",
+    "401": "OpenBingoResponse401",
+    "404": "OpenBingoResponse404",
+    "422": "OpenBingoResponse422",
+    "503": "OpenBingoResponse503"
+   },
+   "services": [
+    {
+     "name": "OpenBingoNumberRequestService",
+     "request_model": "NtdOpenBingoRequest",
+     "response_model": "BingoOpenNumberResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFA80C0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "bingo/record/all",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetBingoRecordAllRequest",
+   "request_model": "GetBingoRecordAllRequest",
+   "response_models": {
+    "200": "GetBingoRecordAllResponse200",
+    "400": "GetBingoRecordAllResponse400",
+    "401": "GetBingoRecordAllResponse401",
+    "503": "GetBingoRecordAllResponse503"
+   },
+   "services": [
+    {
+     "name": "GetBingoRecordRequestService",
+     "request_model": "NtdGetBingoRecordAllRequest",
+     "response_model": "BingoCampaignResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF69D60"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "bom/all",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetBomAllRequest",
+   "request_model": "GetBomAllRequest",
+   "response_models": {
+    "200": "GetBomAllResponse200",
+    "400": "GetBomAllResponse400",
+    "401": "GetBomAllResponse401",
+    "503": "GetBomAllResponse503"
+   },
+   "services": [
+    {
+     "name": "GetBomsRequestService",
+     "request_model": "NtdGetBomAllRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF6A940"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "bom/enhancement",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "EnhanceBomRequest",
+   "request_model": "EnhanceBomRequest",
+   "response_models": {
+    "200": "EnhanceBomResponse200",
+    "400": "EnhanceBomResponse400",
+    "401": "EnhanceBomResponse401",
+    "404": "EnhanceBomResponse404",
+    "422": "EnhanceBomResponse422",
+    "503": "EnhanceBomResponse503"
+   },
+   "services": [
+    {
+     "name": "ReinforceBomExRequestService",
+     "request_model": "NtdEnhanceBomRequest",
+     "response_model": "ReinforceBomResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF53560"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "bom/enhancement/passive",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "EnhanceBomPassiveSkillRequest",
+   "request_model": "EnhanceBomPassiveSkillRequest",
+   "response_models": {
+    "200": "EnhanceBomPassiveSkillResponse200",
+    "400": "EnhanceBomPassiveSkillResponse400",
+    "401": "EnhanceBomPassiveSkillResponse401",
+    "404": "EnhanceBomPassiveSkillResponse404",
+    "422": "EnhanceBomPassiveSkillResponse422",
+    "503": "EnhanceBomPassiveSkillResponse503"
+   },
+   "services": [
+    {
+     "name": "EnhanceBomPassiveSkillRequestServices",
+     "request_model": "NtdEnhanceBomPassiveSkillRequest",
+     "response_model": "ReinforceBomResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF54C20"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "bonus_pass/progression/checkoff",
+   "method": "PUT",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "CheckoffBonusPassProgressionRequest",
+   "request_model": "CheckoffBonusPassProgressionRequest",
+   "response_models": {
+    "200": "CheckoffBonusPassProgressionResponse200",
+    "400": "CheckoffBonusPassProgressionResponse400",
+    "404": "CheckoffBonusPassProgressionResponse404",
+    "503": "CheckoffBonusPassProgressionResponse503"
+   },
+   "services": [
+    {
+     "name": "CheckoffBonusPassProgressionRequestService",
+     "request_model": "NtdCheckoffBonusPassProgressionRequest",
+     "response_model": "CheckoffBonusPassProgressionResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF2D1C0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "bonus_pass/progressions",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "ListBonusPassProgressionsRequest",
+   "request_model": "ListBonusPassProgressionsRequest",
+   "response_models": {
+    "200": "ListBonusPassProgressionsResponse200",
+    "400": "ListBonusPassProgressionsResponse400",
+    "401": "ListBonusPassProgressionsResponse401",
+    "503": "ListBonusPassProgressionsResponse503"
+   },
+   "services": [
+    {
+     "name": "ListBonusPassProgressionsRequestService",
+     "request_model": "NtdListBonusPassProgressionsRequest",
+     "response_model": "ListBonusPassProgressionsResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFA0BD0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "bonus_pass/tier/receive_reward",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "ReceiveBonusPassTierRewardRequest",
+   "request_model": "ReceiveBonusPassTierRewardRequest",
+   "response_models": {
+    "200": "ReceiveBonusPassTierRewardResponse200",
+    "400": "ReceiveBonusPassTierRewardResponse400",
+    "401": "ReceiveBonusPassTierRewardResponse401",
+    "503": "ReceiveBonusPassTierRewardResponse503"
+   },
+   "services": [
+    {
+     "name": "ReceiveBonusPassTierRewardRequestService",
+     "request_model": "NtdReceiveBonusPassTierRewardRequest",
+     "response_model": "ReceiveBonusPassTierRewardResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFB2410"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "composition",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetCompositionRequest",
+   "request_model": "GetCompositionRequest",
+   "response_models": {
+    "200": "GetCompositionResponse200",
+    "400": "GetCompositionResponse400",
+    "401": "GetCompositionResponse401",
+    "503": "GetCompositionResponse503"
+   },
+   "services": [],
+   "source": {
+    "constructor_rva": "0xF6CFE0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "composition/create",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "CreateCompositionRequest",
+   "request_model": "CreateCompositionRequest",
+   "response_models": {
+    "200": "CreateCompositionResponse200",
+    "400": "CreateCompositionResponse400",
+    "401": "CreateCompositionResponse401",
+    "409": "CreateCompositionResponse409",
+    "422": "CreateCompositionResponse422",
+    "503": "CreateCompositionResponse503"
+   },
+   "services": [],
+   "source": {
+    "constructor_rva": "0xF43B30"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "composition/list",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetCompositionListBySectionRequest",
+   "request_model": "GetCompositionListBySectionRequest",
+   "response_models": {
+    "200": "GetCompositionListBySectionResponse200",
+    "400": "GetCompositionListBySectionResponse400",
+    "401": "GetCompositionListBySectionResponse401",
+    "503": "GetCompositionListBySectionResponse503"
+   },
+   "services": [
+    {
+     "name": "GetTeamsRequestService",
+     "request_model": "NtdGetCompositionListBySectionRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF6DC10"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "composition/update",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "UpdateCompositionRequest",
+   "request_model": "UpdateCompositionRequest",
+   "response_models": {
+    "200": "UpdateCompositionResponse200",
+    "400": "UpdateCompositionResponse400",
+    "401": "UpdateCompositionResponse401",
+    "404": "UpdateCompositionResponse404",
+    "422": "UpdateCompositionResponse422",
+    "503": "UpdateCompositionResponse503"
+   },
+   "services": [
+    {
+     "name": "UpdateTeamRequestService",
+     "request_model": "NtdUpdateCompositionRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFCAF60"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "data_link/password/confirm",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "ConfirmDataLinkPasswordRequest",
+   "request_model": "ConfirmDataLinkPasswordRequest",
+   "response_models": {
+    "200": "ConfirmDataLinkPasswordResponse200",
+    "400": "ConfirmDataLinkPasswordResponse400",
+    "401": "ConfirmDataLinkPasswordResponse401",
+    "422": "ConfirmDataLinkPasswordResponse422",
+    "503": "ConfirmDataLinkPasswordResponse503"
+   },
+   "services": [
+    {
+     "name": "ConfirmDataLinkPasswordRequestService",
+     "request_model": "NtdConfirmDataLinkPasswordRequest",
+     "response_model": "ConfirmDataLinkPasswordResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF38520"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "data_link/password/exec",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "ExecDataLinkPasswordRequest",
+   "request_model": "ExecDataLinkPasswordRequest",
+   "response_models": {
+    "200": "ExecDataLinkPasswordResponse200",
+    "400": "ExecDataLinkPasswordResponse400",
+    "422": "ExecDataLinkPasswordResponse422",
+    "503": "ExecDataLinkPasswordResponse503"
+   },
+   "services": [
+    {
+     "name": "ExecDataLinkPasswordRequestService",
+     "request_model": "NtdExecDataLinkPasswordRequest",
+     "response_model": "ExecDataLinkPasswordResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF665C0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "data_link/password/issue",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "IssueDataLinkPasswordRequest",
+   "request_model": "IssueDataLinkPasswordRequest",
+   "response_models": {
+    "200": "IssueDataLinkPasswordResponse200",
+    "400": "IssueDataLinkPasswordResponse400",
+    "401": "IssueDataLinkPasswordResponse401",
+    "503": "IssueDataLinkPasswordResponse503"
+   },
+   "services": [
+    {
+     "name": "IssueDataLinkPasswordRequestService",
+     "request_model": "NtdIssueDataLinkPasswordRequest",
+     "response_model": "IssueDataLinkPasswordResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF9F370"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "debug/inbox/message/post",
+   "method": "POST",
+   "protocol": 1,
+   "auth": false,
+   "request_class": "PostDebugInboxMessageRequest",
+   "request_model": "PostDebugInboxMessageRequest",
+   "response_models": {
+    "200": "PostDebugInboxMessageResponse200",
+    "400": "PostDebugInboxMessageResponse400",
+    "503": "PostDebugInboxMessageResponse503"
+   },
+   "services": [],
+   "source": {
+    "constructor_rva": "0xFACF60"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "event/grow_chara/confirm",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "ConfirmGrowCharaRequest",
+   "request_model": "ConfirmGrowCharaRequest",
+   "response_models": {
+    "200": "ConfirmGrowCharaResponse200",
+    "400": "ConfirmGrowCharaResponse400",
+    "401": "ConfirmGrowCharaResponse401",
+    "404": "ConfirmGrowCharaResponse404",
+    "422": "ConfirmGrowCharaResponse422",
+    "503": "ConfirmGrowCharaResponse503"
+   },
+   "services": [
+    {
+     "name": "ConfirmGrowCharaRequestService",
+     "request_model": "NtdConfirmGrowCharaRequest",
+     "response_model": "ConfirmGrowCharaResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF39FF0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "event/sealed_chara/confirm",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "ConfirmSealedCharaRequest",
+   "request_model": "ConfirmSealedCharaRequest",
+   "response_models": {
+    "200": "ConfirmSealedCharaResponse200",
+    "400": "ConfirmSealedCharaResponse400",
+    "401": "ConfirmSealedCharaResponse401",
+    "404": "ConfirmSealedCharaResponse404",
+    "422": "ConfirmSealedCharaResponse422",
+    "503": "ConfirmSealedCharaResponse503"
+   },
+   "services": [
+    {
+     "name": "ConfirmSealedCharaRequestService",
+     "request_model": "NtdConfirmSealedCharaRequest",
+     "response_model": "ConfirmSealedCharaResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF407F0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "event/sealed_chara/modify",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "ModifySealedCharaRequest",
+   "request_model": "ModifySealedCharaRequest",
+   "response_models": {
+    "200": "ModifySealedCharaResponse200",
+    "400": "ModifySealedCharaResponse400",
+    "401": "ModifySealedCharaResponse401",
+    "404": "ModifySealedCharaResponse404",
+    "422": "ModifySealedCharaResponse422",
+    "503": "ModifySealedCharaResponse503"
+   },
+   "services": [
+    {
+     "name": "ModifySealedCharaRequestService",
+     "request_model": "NtdModifySealedCharaRequest",
+     "response_model": "ModifySealedCharaResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFA6920"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "event/subdue_raid/confirm",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "ConfirmSubdueRaidProgressRequest",
+   "request_model": "ConfirmSubdueRaidProgressRequest",
+   "response_models": {
+    "200": "ConfirmSubdueRaidProgressResponse200",
+    "400": "ConfirmSubdueRaidProgressResponse400",
+    "401": "ConfirmSubdueRaidProgressResponse401",
+    "404": "ConfirmSubdueRaidProgressResponse404",
+    "422": "ConfirmSubdueRaidProgressResponse422",
+    "503": "ConfirmSubdueRaidProgressResponse503"
+   },
+   "services": [
+    {
+     "name": "SubdueRaidRequestService",
+     "request_model": "NtdConfirmSubdueRaidProgressRequest",
+     "response_model": "SubdueRaidResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF42060"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "farming/yield",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "YieldFarmingResourcesRequest",
+   "request_model": "YieldFarmingResourcesRequest",
+   "response_models": {
+    "200": "YieldFarmingResourcesResponse200",
+    "400": "YieldFarmingResourcesResponse400",
+    "401": "YieldFarmingResourcesResponse401",
+    "503": "YieldFarmingResourcesResponse503"
+   },
+   "services": [
+    {
+     "name": "YieldFarmingResourcesRequestService",
+     "request_model": "NtdYieldFarmingResourcesRequest",
+     "response_model": "YieldFarmingResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFD2E30"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "gacha/box/content_catalog",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetBoxGachaContentCatalogRequest",
+   "request_model": "GetBoxGachaContentCatalogRequest",
+   "response_models": {
+    "200": "GetBoxGachaContentCatalogResponse200",
+    "400": "GetBoxGachaContentCatalogResponse400",
+    "401": "GetBoxGachaContentCatalogResponse401",
+    "404": "GetBoxGachaContentCatalogResponse404",
+    "503": "GetBoxGachaContentCatalogResponse503"
+   },
+   "services": [
+    {
+     "name": "GetBoxGachaContentCatalogRequestService",
+     "request_model": "NtdGetBoxGachaContentCatalogRequest",
+     "response_model": "GetBoxGachaContentCatalogResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF6B520"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "gacha/box/reset",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "ResetBoxGachaRequest",
+   "request_model": "ResetBoxGachaRequest",
+   "response_models": {
+    "200": "ResetBoxGachaResponse200",
+    "400": "ResetBoxGachaResponse400",
+    "401": "ResetBoxGachaResponse401",
+    "404": "ResetBoxGachaResponse404",
+    "422": "ResetBoxGachaResponse422",
+    "503": "ResetBoxGachaResponse503"
+   },
+   "services": [
+    {
+     "name": "ResetBoxGachaRequestService",
+     "request_model": "NtdResetBoxGachaRequest",
+     "response_model": "NtdResetBoxGachaResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFB7050"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "gacha/box_record/list",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetBoxGachaRecordListRequest",
+   "request_model": "GetBoxGachaRecordListRequest",
+   "response_models": {
+    "200": "GetBoxGachaRecordListResponse200",
+    "400": "GetBoxGachaRecordListResponse400",
+    "401": "GetBoxGachaRecordListResponse401",
+    "503": "GetBoxGachaRecordListResponse503"
+   },
+   "services": [
+    {
+     "name": "GetBoxGachaRecordListRequestService",
+     "request_model": "NtdGetBoxGachaRecordListRequest",
+     "response_model": "GetBoxGachaRecordListResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF6C3B0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "gacha/draw",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "DrawGachaRequest",
+   "request_model": "DrawGachaRequest",
+   "response_models": {
+    "200": "DrawGachaResponse200",
+    "400": "DrawGachaResponse400",
+    "401": "DrawGachaResponse401",
+    "404": "DrawGachaResponse404",
+    "422": "DrawGachaResponse422",
+    "503": "DrawGachaResponse503"
+   },
+   "services": [
+    {
+     "name": "DrawGachaRequestService",
+     "request_model": "NtdDrawGachaRequest",
+     "response_model": "DrawGachaResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF4B330"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "gacha/draw/payment",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "DrawGachaByPaymentRequest",
+   "request_model": "DrawGachaByPaymentRequest",
+   "response_models": {
+    "200": "DrawGachaByPaymentResponse200",
+    "400": "DrawGachaByPaymentResponse400",
+    "401": "DrawGachaByPaymentResponse401",
+    "404": "DrawGachaByPaymentResponse404",
+    "422": "DrawGachaByPaymentResponse422",
+    "503": "DrawGachaByPaymentResponse503"
+   },
+   "services": [
+    {
+     "name": "FinishPaymentGachaRequestService",
+     "request_model": "NtdDrawGachaByPaymentRequest",
+     "response_model": "DrawGachaResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF4CAE0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "gacha/history",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetGachaHistoryRequest",
+   "request_model": "GetGachaHistoryRequest",
+   "response_models": {
+    "200": "GetGachaHistoryResponse200",
+    "400": "GetGachaHistoryResponse400",
+    "401": "GetGachaHistoryResponse401",
+    "503": "GetGachaHistoryResponse503"
+   },
+   "services": [
+    {
+     "name": "GetGachaHistoryRequestService",
+     "request_model": "NtdGetGachaHistoryRequest",
+     "response_model": "GetGachaHistoryResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF70060"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "gacha/list",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetGachaListRequest",
+   "request_model": "GetGachaListRequest",
+   "response_models": {
+    "200": "GetGachaListResponse200",
+    "400": "GetGachaListResponse400",
+    "401": "GetGachaListResponse401",
+    "503": "GetGachaListResponse503"
+   },
+   "services": [
+    {
+     "name": "GetGachaListRequestService",
+     "request_model": "NtdGetGachaListRequest",
+     "response_model": "GetGachaListResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF70C40"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "gacha/lootbox/open",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "OpenLootBoxRequest",
+   "request_model": "OpenLootBoxRequest",
+   "response_models": {
+    "200": "OpenLootBoxResponse200",
+    "400": "OpenLootBoxResponse400",
+    "401": "OpenLootBoxResponse401",
+    "404": "OpenLootBoxResponse404",
+    "422": "OpenLootBoxResponse422",
+    "503": "OpenLootBoxResponse503"
+   },
+   "services": [
+    {
+     "name": "OpenLootBoxRequestServices",
+     "request_model": "NtdOpenLootBoxRequest",
+     "response_model": "DrawGachaResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFAB340"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "gacha/probabilities",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetGachaProbabilitiesRequest",
+   "request_model": "GetGachaProbabilitiesRequest",
+   "response_models": {
+    "200": "GetGachaProbabilitiesResponse200",
+    "400": "GetGachaProbabilitiesResponse400",
+    "401": "GetGachaProbabilitiesResponse401",
+    "404": "GetGachaProbabilitiesResponse404",
+    "422": "GetGachaProbabilitiesResponse422",
+    "503": "GetGachaProbabilitiesResponse503"
+   },
+   "services": [
+    {
+     "name": "GetGachaProbabilitiesRequestService",
+     "request_model": "NtdGetGachaProbabilitiesRequest",
+     "response_model": "GetGachaProbabilitiesResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF71820"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "gacha/select",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "SelectGachaRequest",
+   "request_model": "SelectGachaRequest",
+   "response_models": {
+    "200": "SelectGachaResponse200",
+    "400": "SelectGachaResponse400",
+    "401": "SelectGachaResponse401",
+    "404": "SelectGachaResponse404",
+    "422": "SelectGachaResponse422",
+    "503": "SelectGachaResponse503"
+   },
+   "services": [
+    {
+     "name": "SelectGachaRequestService",
+     "request_model": "NtdSelectGachaRequest",
+     "response_model": "SelectGachaResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFBC670"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "gacha/select/get",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetSelectGachaRequest",
+   "request_model": "GetSelectGachaRequest",
+   "response_models": {
+    "200": "GetSelectGachaResponse200",
+    "400": "GetSelectGachaResponse400",
+    "401": "GetSelectGachaResponse401",
+    "404": "GetSelectGachaResponse404",
+    "503": "GetSelectGachaResponse503"
+   },
+   "services": [
+    {
+     "name": "GetSelectGachaRequestService",
+     "request_model": "NtdGetSelectGachaRequest",
+     "response_model": "GetSelectGachaResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF8B8D0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "gacha/stamp_record/list",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetGachaStampRecordListRequest",
+   "request_model": "GetGachaStampRecordListRequest",
+   "response_models": {
+    "200": "GetGachaStampRecordListResponse200",
+    "400": "GetGachaStampRecordListResponse400",
+    "401": "GetGachaStampRecordListResponse401",
+    "503": "GetGachaStampRecordListResponse503"
+   },
+   "services": [
+    {
+     "name": "GetGachaStampRecordListRequestService",
+     "request_model": "NtdGetGachaStampRecordListRequest",
+     "response_model": "GetGachaStampRecordListResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF72EB0"
+   }
+  },
+  {
+   "family": "legacy",
+   "endpoint": "gha/wglopt/get",
+   "method": null,
+   "protocol": null,
+   "auth": null,
+   "request_class": "GetOptionKeyValueRequest",
+   "request_model": "GetOptionKeyValueRequest",
+   "response_models": {},
+   "services": [],
+   "source": {
+    "constructor_rva": "0x8A5EF0"
+   }
+  },
+  {
+   "family": "legacy",
+   "endpoint": "gha/wglopt/set",
+   "method": null,
+   "protocol": null,
+   "auth": null,
+   "request_class": "SetOptionKeyValueRequest",
+   "request_model": "SetOptionKeyValueRequest",
+   "response_models": {},
+   "services": [],
+   "source": {
+    "constructor_rva": "0x8A5E60"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "inbox/list/seq_continue",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetInboxListSeqContinueRequest",
+   "request_model": "GetInboxListSeqContinueRequest",
+   "response_models": {
+    "200": "GetInboxListSeqContinueResponse200",
+    "400": "GetInboxListSeqContinueResponse400",
+    "401": "GetInboxListSeqContinueResponse401",
+    "503": "GetInboxListSeqContinueResponse503"
+   },
+   "services": [
+    {
+     "name": "GetPresentsByTokenRequesService",
+     "request_model": "NtdGetInboxListSeqContinueRequest",
+     "response_model": "GetPresentsResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF75350"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "inbox/list/seq_start",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetInboxListSeqStartRequest",
+   "request_model": "GetInboxListSeqStartRequest",
+   "response_models": {
+    "200": "GetInboxListSeqStartResponse200",
+    "400": "GetInboxListSeqStartResponse400",
+    "401": "GetInboxListSeqStartResponse401",
+    "503": "GetInboxListSeqStartResponse503"
+   },
+   "services": [
+    {
+     "name": "GetPresentsRequestService",
+     "request_model": "NtdGetInboxListSeqStartRequest",
+     "response_model": "GetPresentsResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF75F80"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "inbox/message/multi_open",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "OpenInboxMultiMessageRequest",
+   "request_model": "OpenInboxMultiMessageRequest",
+   "response_models": {
+    "200": "OpenInboxMultiMessageResponse200",
+    "400": "OpenInboxMultiMessageResponse400",
+    "401": "OpenInboxMultiMessageResponse401",
+    "503": "OpenInboxMultiMessageResponse503"
+   },
+   "services": [
+    {
+     "name": "OpenPresentsRequestService",
+     "request_model": "NtdOpenInboxMultiMessageRequest",
+     "response_model": "OpenPresentsResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFAA480"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "inbox/message/open",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "OpenInboxMessageRequest",
+   "request_model": "OpenInboxMessageRequest",
+   "response_models": {
+    "200": "OpenInboxMessageResponse200",
+    "400": "OpenInboxMessageResponse400",
+    "401": "OpenInboxMessageResponse401",
+    "503": "OpenInboxMessageResponse503"
+   },
+   "services": [
+    {
+     "name": "OpenPresentRequestService",
+     "request_model": "NtdOpenInboxMessageRequest",
+     "response_model": "OpenPresentsResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFA9850"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "inbox_archive/list/seq_continue",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetInboxArchiveListSeqContinueRequest",
+   "request_model": "GetInboxArchiveListSeqContinueRequest",
+   "response_models": {
+    "200": "GetInboxArchiveListSeqContinueResponse200",
+    "400": "GetInboxArchiveListSeqContinueResponse400",
+    "401": "GetInboxArchiveListSeqContinueResponse401",
+    "503": "GetInboxArchiveListSeqContinueResponse503"
+   },
+   "services": [
+    {
+     "name": "GetPresentHistoryByTokenRequestService",
+     "request_model": "NtdGetInboxArchiveListSeqContinueRequest",
+     "response_model": "GetPresentsResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF73AE0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "inbox_archive/list/seq_start",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetInboxArchiveListSeqStartRequest",
+   "request_model": "GetInboxArchiveListSeqStartRequest",
+   "response_models": {
+    "200": "GetInboxArchiveListSeqStartResponse200",
+    "400": "GetInboxArchiveListSeqStartResponse400",
+    "401": "GetInboxArchiveListSeqStartResponse401",
+    "503": "GetInboxArchiveListSeqStartResponse503"
+   },
+   "services": [
+    {
+     "name": "GetPresentHistoryRequestService",
+     "request_model": "NtdGetInboxArchiveListSeqStartRequest",
+     "response_model": "GetPresentsResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF74710"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "item/list",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetItemListRequest",
+   "request_model": "GetItemListRequest",
+   "response_models": {
+    "200": "GetItemListResponse200",
+    "400": "GetItemListResponse400",
+    "401": "GetItemListResponse401",
+    "503": "GetItemListResponse503"
+   },
+   "services": [
+    {
+     "name": "GetItemsRequestService",
+     "request_model": "NtdGetItemListRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF76BB0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "item/list/continue",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetItemListContinueRequest",
+   "request_model": "GetItemListContinueRequest",
+   "response_models": {
+    "200": "GetItemListContinueResponse200",
+    "400": "GetItemListContinueResponse400",
+    "401": "GetItemListContinueResponse401",
+    "503": "GetItemListContinueResponse503"
+   },
+   "services": [
+    {
+     "name": "GetItemsByTokenRequestService",
+     "request_model": "NtdGetItemListContinueRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF77790"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "item/subskill/synthesize",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "SynthesizeSubskillRequest",
+   "request_model": "SynthesizeSubskillRequest",
+   "response_models": {
+    "200": "SynthesizeSubskillResponse200",
+    "400": "SynthesizeSubskillResponse400",
+    "401": "SynthesizeSubskillResponse401",
+    "404": "SynthesizeSubskillResponse404",
+    "422": "SynthesizeSubskillResponse422",
+    "503": "SynthesizeSubskillResponse503"
+   },
+   "services": [
+    {
+     "name": "SynthesizeSubSkillRequestService",
+     "request_model": "NtdSynthesizeSubskillRequest",
+     "response_model": "SynthesizeSubSkillResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFC89A0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "limit/list/seq_continue",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetLimitCounterListSeqContinueRequest",
+   "request_model": "GetLimitCounterListSeqContinueRequest",
+   "response_models": {
+    "200": "GetLimitCounterListSeqContinueResponse200",
+    "400": "GetLimitCounterListSeqContinueResponse400",
+    "401": "GetLimitCounterListSeqContinueResponse401",
+    "503": "GetLimitCounterListSeqContinueResponse503"
+   },
+   "services": [
+    {
+     "name": "GetLimitCountersByTokenRequestService",
+     "request_model": "NtdGetLimitCounterListSeqContinueRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF783C0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "limit/list/seq_start",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetLimitCounterListSeqStartRequest",
+   "request_model": "GetLimitCounterListSeqStartRequest",
+   "response_models": {
+    "200": "GetLimitCounterListSeqStartResponse200",
+    "400": "GetLimitCounterListSeqStartResponse400",
+    "401": "GetLimitCounterListSeqStartResponse401",
+    "503": "GetLimitCounterListSeqStartResponse503"
+   },
+   "services": [
+    {
+     "name": "GetLimitCountersRequestService",
+     "request_model": "NtdGetLimitCounterListSeqStartRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF78FF0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "loginbonus/get",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetLoginBonusRequest",
+   "request_model": "GetLoginBonusRequest",
+   "response_models": {
+    "200": "GetLoginBonusResponse200",
+    "400": "GetLoginBonusResponse400",
+    "401": "GetLoginBonusResponse401",
+    "422": "GetLoginBonusResponse422",
+    "503": "GetLoginBonusResponse503"
+   },
+   "services": [
+    {
+     "name": "UpdateLoginBonusRequestService",
+     "request_model": "NtdGetLoginBonusRequest",
+     "response_model": "UpdateLoginBonusResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF79C20"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "loginbonus/sheets",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "ListLoginBonusSheetsRequest",
+   "request_model": "ListLoginBonusSheetsRequest",
+   "response_models": {
+    "200": "ListLoginBonusSheetsResponse200",
+    "400": "ListLoginBonusSheetsResponse400",
+    "401": "ListLoginBonusSheetsResponse401",
+    "503": "ListLoginBonusSheetsResponse503"
+   },
+   "services": [
+    {
+     "name": "ListLoginBonusRequestService",
+     "request_model": "NtdListLoginBonusSheetsRequest",
+     "response_model": "ListLoginBonusResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFA17B0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "maintenance/check",
+   "method": "POST",
+   "protocol": 3,
+   "auth": false,
+   "request_class": "CheckMaintenanceRequest",
+   "request_model": "CheckMaintenanceRequest",
+   "response_models": {
+    "200": "CheckMaintenanceResponse200",
+    "400": "CheckMaintenanceResponse400"
+   },
+   "services": [
+    {
+     "name": "CheckMaintenanceRequestService",
+     "request_model": "NtdCheckMaintenanceRequest",
+     "response_model": "CheckMaintenanceResponse"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF2B730"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "maintenance/micro/check",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "CheckMicroMaintenanceRequest",
+   "request_model": "CheckMicroMaintenanceRequest",
+   "response_models": {
+    "200": "CheckMicroMaintenanceResponse200",
+    "400": "CheckMicroMaintenanceResponse400",
+    "401": "CheckMicroMaintenanceResponse401"
+   },
+   "services": [
+    {
+     "name": "CheckMicroMaintenanceRequestService",
+     "request_model": "NtdCheckMicroMaintenanceRequest",
+     "response_model": "CheckMicroMaintenanceResponse"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF2C850"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "mileage_program",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetMileageRequest",
+   "request_model": "GetMileageRequest",
+   "response_models": {
+    "200": "GetMileageResponse200",
+    "400": "GetMileageResponse400",
+    "401": "GetMileageResponse401",
+    "404": "GetMileageResponse404",
+    "422": "GetMileageResponse422",
+    "503": "GetMileageResponse503"
+   },
+   "services": [],
+   "source": {
+    "constructor_rva": "0xF7AFA0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "mileage_program/commit",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "CommitMileageItemRequest",
+   "request_model": "CommitMileageItemRequest",
+   "response_models": {
+    "200": "CommitMileageItemResponse200",
+    "400": "CommitMileageItemResponse400",
+    "401": "CommitMileageItemResponse401",
+    "404": "CommitMileageItemResponse404",
+    "422": "CommitMileageItemResponse422",
+    "503": "CommitMileageItemResponse503"
+   },
+   "services": [],
+   "source": {
+    "constructor_rva": "0xF2F570"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "mileage_program/record/list",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetMileageRecordListRequest",
+   "request_model": "GetMileageRecordListRequest",
+   "response_models": {
+    "200": "GetMileageRecordListResponse200",
+    "400": "GetMileageRecordListResponse400",
+    "401": "GetMileageRecordListResponse401",
+    "503": "GetMileageRecordListResponse503"
+   },
+   "services": [],
+   "source": {
+    "constructor_rva": "0xF7C6B0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "mileage_program/record/list/continue",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetMileageRecordListContinueRequest",
+   "request_model": "GetMileageRecordListContinueRequest",
+   "response_models": {
+    "200": "GetMileageRecordListContinueResponse200",
+    "400": "GetMileageRecordListContinueResponse400",
+    "401": "GetMileageRecordListContinueResponse401",
+    "503": "GetMileageRecordListContinueResponse503"
+   },
+   "services": [],
+   "source": {
+    "constructor_rva": "0xF7D2E0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "mission/list/category",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetMissionRecordListInCategoryRequest",
+   "request_model": "GetMissionRecordListInCategoryRequest",
+   "response_models": {
+    "200": "GetMissionRecordListInCategoryResponse200",
+    "400": "GetMissionRecordListInCategoryResponse400",
+    "401": "GetMissionRecordListInCategoryResponse401",
+    "503": "GetMissionRecordListInCategoryResponse503"
+   },
+   "services": [
+    {
+     "name": "GetMissionsRequestService",
+     "request_model": "NtdGetMissionRecordListInCategoryRequest",
+     "response_model": "GetMissionsResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF7DF10"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "mission/receive",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "ReceiveMissionRewardRequest",
+   "request_model": "ReceiveMissionRewardRequest",
+   "response_models": {
+    "200": "ReceiveMissionRewardResponse200",
+    "400": "ReceiveMissionRewardResponse400",
+    "401": "ReceiveMissionRewardResponse401",
+    "503": "ReceiveMissionRewardResponse503"
+   },
+   "services": [
+    {
+     "name": "ReceiveMissionRewardRequestService",
+     "request_model": "NtdReceiveMissionRewardRequest",
+     "response_model": "ReceiveMissionRewardsResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFB6420"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "news/list",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetNewsListRequest",
+   "request_model": "GetNewsListRequest",
+   "response_models": {
+    "200": "GetNewsListResponse200",
+    "400": "GetNewsListResponse400",
+    "401": "GetNewsListResponse401",
+    "503": "GetNewsListResponse503"
+   },
+   "services": [],
+   "source": {
+    "constructor_rva": "0xF7EAF0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "news/list/continue",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetNewsListContinueRequest",
+   "request_model": "GetNewsListContinueRequest",
+   "response_models": {
+    "200": "GetNewsListContinueResponse200",
+    "400": "GetNewsListContinueResponse400",
+    "401": "GetNewsListContinueResponse401",
+    "503": "GetNewsListContinueResponse503"
+   },
+   "services": [],
+   "source": {
+    "constructor_rva": "0xF7F710"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "payment/voucher/remainings",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetRemainingVoucherListRequest",
+   "request_model": "GetRemainingVoucherListRequest",
+   "response_models": {
+    "200": "GetRemainingVoucherListResponse200",
+    "400": "GetRemainingVoucherListResponse400",
+    "401": "GetRemainingVoucherListResponse401",
+    "503": "GetRemainingVoucherListResponse503"
+   },
+   "services": [
+    {
+     "name": "GetIncompletePaymentRequestService",
+     "request_model": "NtdGetRemainingVoucherListRequest",
+     "response_model": "GetIncompletePaymentResponse"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF8ACF0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "period/list/seq_continue",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetPeriodInfoListSeqContinueRequest",
+   "request_model": "GetPeriodInfoListSeqContinueRequest",
+   "response_models": {
+    "200": "GetPeriodInfoListSeqContinueResponse200",
+    "400": "GetPeriodInfoListSeqContinueResponse400",
+    "401": "GetPeriodInfoListSeqContinueResponse401",
+    "503": "GetPeriodInfoListSeqContinueResponse503"
+   },
+   "services": [
+    {
+     "name": "GetPeriodByTokenRequestService",
+     "request_model": "NtdGetPeriodInfoListSeqContinueRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF80F20"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "period/list/seq_start",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetPeriodInfoListSeqStartRequest",
+   "request_model": "GetPeriodInfoListSeqStartRequest",
+   "response_models": {
+    "200": "GetPeriodInfoListSeqStartResponse200",
+    "400": "GetPeriodInfoListSeqStartResponse400",
+    "401": "GetPeriodInfoListSeqStartResponse401",
+    "503": "GetPeriodInfoListSeqStartResponse503"
+   },
+   "services": [
+    {
+     "name": "GetPeriodRequestService",
+     "request_model": "NtdGetPeriodInfoListSeqStartRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF81B50"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "player/get",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetPlayerRequest",
+   "request_model": "GetPlayerRequest",
+   "response_models": {
+    "200": "GetPlayerResponse200",
+    "400": "GetPlayerResponse400",
+    "401": "GetPlayerResponse401",
+    "503": "GetPlayerResponse503"
+   },
+   "services": [
+    {
+     "name": "GetPlayerRequestService",
+     "request_model": "NtdGetPlayerRequest",
+     "response_model": "ResponseDataBase"
+    },
+    {
+     "name": "GetPlayerRequestServiceForAccountDeletion",
+     "request_model": "NtdGetPlayerRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF82780"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "player/home/visit",
+   "method": "PUT",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "VisitHomeRequest",
+   "request_model": "VisitHomeRequest",
+   "response_models": {
+    "200": "VisitHomeResponse200",
+    "400": "VisitHomeResponse400",
+    "404": "VisitHomeResponse404",
+    "503": "VisitHomeResponse503"
+   },
+   "services": [
+    {
+     "name": "VisitHomeRequestService",
+     "request_model": "NtdVisitHomeRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFD2250"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "player/init",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "InitPlayerRequest",
+   "request_model": "InitPlayerRequest",
+   "response_models": {
+    "200": "InitPlayerResponse200",
+    "400": "InitPlayerResponse400",
+    "401": "InitPlayerResponse401",
+    "503": "InitPlayerResponse503"
+   },
+   "services": [
+    {
+     "name": "InitializePlayerRequestService",
+     "request_model": "NtdInitPlayerRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF9D5F0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "player/nickname/",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetNicknameRequest",
+   "request_model": "GetNicknameRequest",
+   "response_models": {
+    "200": "GetNicknameResponse200",
+    "400": "GetNicknameResponse400",
+    "401": "GetNicknameResponse401",
+    "503": "GetNicknameResponse503"
+   },
+   "services": [],
+   "source": {
+    "constructor_rva": "0xF80340"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "player/nickname/update/",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "SetNicknameRequest",
+   "request_model": "SetNicknameRequest",
+   "response_models": {
+    "200": "SetNicknameResponse200",
+    "400": "SetNicknameResponse400",
+    "401": "SetNicknameResponse401",
+    "503": "SetNicknameResponse503"
+   },
+   "services": [
+    {
+     "name": "UpdatePlayerNameRequestService",
+     "request_model": "NtdSetNicknameRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFC17D0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "player/restore/stamina/coin",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "RestoreStaminaByCoinRequest",
+   "request_model": "RestoreStaminaByCoinRequest",
+   "response_models": {
+    "200": "RestoreStaminaByCoinResponse200",
+    "400": "RestoreStaminaByCoinResponse400",
+    "401": "RestoreStaminaByCoinResponse401",
+    "422": "RestoreStaminaByCoinResponse422",
+    "503": "RestoreStaminaByCoinResponse503"
+   },
+   "services": [
+    {
+     "name": "RestoreStaminaByStoneRequestService",
+     "request_model": "NtdRestoreStaminaByCoinRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFB8670"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "player/restore/stamina/item",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "RestoreStaminaByItemRequest",
+   "request_model": "RestoreStaminaByItemRequest",
+   "response_models": {
+    "200": "RestoreStaminaByItemResponse200",
+    "400": "RestoreStaminaByItemResponse400",
+    "401": "RestoreStaminaByItemResponse401",
+    "422": "RestoreStaminaByItemResponse422",
+    "503": "RestoreStaminaByItemResponse503"
+   },
+   "services": [
+    {
+     "name": "RestoreStaminaByItemRequestService",
+     "request_model": "NtdRestoreStaminaByItemRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFB99F0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "prefs",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetPrefsRequest",
+   "request_model": "GetPrefsRequest",
+   "response_models": {
+    "200": "GetPrefsResponse200",
+    "400": "GetPrefsResponse400",
+    "401": "GetPrefsResponse401",
+    "422": "GetPrefsResponse422",
+    "503": "GetPrefsResponse503"
+   },
+   "services": [],
+   "source": {
+    "constructor_rva": "0xF833B0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "prefs/create",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "CreatePrefsRequest",
+   "request_model": "CreatePrefsRequest",
+   "response_models": {
+    "200": "CreatePrefsResponse200",
+    "400": "CreatePrefsResponse400",
+    "401": "CreatePrefsResponse401",
+    "409": "CreatePrefsResponse409",
+    "422": "CreatePrefsResponse422",
+    "503": "CreatePrefsResponse503"
+   },
+   "services": [],
+   "source": {
+    "constructor_rva": "0xF452D0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "prefs/list",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetPrefsListRequest",
+   "request_model": "GetPrefsListRequest",
+   "response_models": {
+    "200": "GetPrefsListResponse200",
+    "400": "GetPrefsListResponse400",
+    "401": "GetPrefsListResponse401",
+    "422": "GetPrefsListResponse422",
+    "503": "GetPrefsListResponse503"
+   },
+   "services": [
+    {
+     "name": "GetPrefsRequestService",
+     "request_model": "NtdGetPrefsListRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF84870"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "prefs/set",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "SetPrefsRequest",
+   "request_model": "SetPrefsRequest",
+   "response_models": {
+    "200": "SetPrefsResponse200",
+    "400": "SetPrefsResponse400",
+    "401": "SetPrefsResponse401",
+    "422": "SetPrefsResponse422",
+    "503": "SetPrefsResponse503"
+   },
+   "services": [
+    {
+     "name": "UpdatePrefsRequestService",
+     "request_model": "NtdSetPrefsRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFC23A0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "purchase/information",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetPurchaseFeatureInfoRequest",
+   "request_model": "GetPurchaseFeatureInfoRequest",
+   "response_models": {
+    "200": "GetPurchaseFeatureInfoResponse200",
+    "400": "GetPurchaseFeatureInfoResponse400",
+    "401": "GetPurchaseFeatureInfoResponse401",
+    "422": "GetPurchaseFeatureInfoResponse422",
+    "503": "GetPurchaseFeatureInfoResponse503"
+   },
+   "services": [],
+   "source": {
+    "constructor_rva": "0xF85D30"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "purchase/payment/begin",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "BeginPaymentRequest",
+   "request_model": "BeginPaymentRequest",
+   "response_models": {
+    "200": "BeginPaymentResponse200",
+    "400": "BeginPaymentResponse400",
+    "401": "BeginPaymentResponse401",
+    "422": "BeginPaymentResponse422",
+    "503": "BeginPaymentResponse503"
+   },
+   "services": [
+    {
+     "name": "BeginPaymentRequestService",
+     "request_model": "BeginPaymentRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF28BF0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "purchase/payment/cancel",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "CancelPaymentRequest",
+   "request_model": "CancelPaymentRequest",
+   "response_models": {
+    "200": "CancelPaymentResponse200",
+    "400": "CancelPaymentResponse400",
+    "401": "CancelPaymentResponse401",
+    "422": "CancelPaymentResponse422",
+    "503": "CancelPaymentResponse503"
+   },
+   "services": [
+    {
+     "name": "CancelPaymentRequestService",
+     "request_model": "CancelPaymentRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF2A070"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "purchase/payment/confirm/as",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "ConfirmPaymentByAppStoreReceiptRequest",
+   "request_model": "ConfirmPaymentByAppStoreReceiptRequest",
+   "response_models": {
+    "200": "ConfirmPaymentByAppStoreReceiptResponse200",
+    "400": "ConfirmPaymentByAppStoreReceiptResponse400",
+    "401": "ConfirmPaymentByAppStoreReceiptResponse401",
+    "422": "ConfirmPaymentByAppStoreReceiptResponse422",
+    "503": "ConfirmPaymentByAppStoreReceiptResponse503"
+   },
+   "services": [
+    {
+     "name": "ConfirmPaymentByAppStoreReceiptRequestService",
+     "request_model": "ConfirmPaymentByAppStoreReceiptRequest",
+     "response_model": "ConfirmPaymentByAppStoreReceiptResponse"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF3B6E0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "purchase/payment/confirm/gp",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "ConfirmPaymentByGooglePlayReceiptRequest",
+   "request_model": "ConfirmPaymentByGooglePlayReceiptRequest",
+   "response_models": {
+    "200": "ConfirmPaymentByGooglePlayReceiptResponse200",
+    "400": "ConfirmPaymentByGooglePlayReceiptResponse400",
+    "401": "ConfirmPaymentByGooglePlayReceiptResponse401",
+    "422": "ConfirmPaymentByGooglePlayReceiptResponse422",
+    "503": "ConfirmPaymentByGooglePlayReceiptResponse503"
+   },
+   "services": [
+    {
+     "name": "ConfirmPaymentByGooglePlayReceiptRequestService",
+     "request_model": "ConfirmPaymentByGooglePlayReceiptRequest",
+     "response_model": "ConfirmPaymentByGooglePlayReceiptResponse"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF3D2C0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "purchase/tier/confirm",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "ConfirmPutchaseTierRequest",
+   "request_model": "ConfirmPutchaseTierRequest",
+   "response_models": {
+    "200": "ConfirmPutchaseTierResponse200",
+    "400": "ConfirmPutchaseTierResponse400",
+    "401": "ConfirmPutchaseTierResponse401",
+    "422": "ConfirmPutchaseTierResponse422",
+    "503": "ConfirmPutchaseTierResponse503"
+   },
+   "services": [],
+   "source": {
+    "constructor_rva": "0xF3F0B0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "purchase/vcr/record/list",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetVcrRecordListRequest",
+   "request_model": "GetVcrRecordListRequest",
+   "response_models": {
+    "200": "GetVcrRecordListResponse200",
+    "400": "GetVcrRecordListResponse400",
+    "401": "GetVcrRecordListResponse401",
+    "503": "GetVcrRecordListResponse503"
+   },
+   "services": [
+    {
+     "name": "GetVcrRecordListRequestService",
+     "request_model": "NtdGetVcrRecordListRequest",
+     "response_model": "GetVcrRecordListResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF97600"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "purchase/vcr/record/list/continue",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetVcrRecordListContinueRequest",
+   "request_model": "GetVcrRecordListContinueRequest",
+   "response_models": {
+    "200": "GetVcrRecordListContinueResponse200",
+    "400": "GetVcrRecordListContinueResponse400",
+    "401": "GetVcrRecordListContinueResponse401",
+    "503": "GetVcrRecordListContinueResponse503"
+   },
+   "services": [
+    {
+     "name": "GetVcrRecordListByTokenRequestService",
+     "request_model": "NtdGetVcrRecordListContinueRequest",
+     "response_model": "GetVcrRecordListResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF981E0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "quest/character/ranking",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetQuestCharacterRankingRequest",
+   "request_model": "GetQuestCharacterRankingRequest",
+   "response_models": {
+    "200": "GetQuestCharacterRankingResponse200",
+    "400": "GetQuestCharacterRankingResponse400",
+    "401": "GetQuestCharacterRankingResponse401",
+    "503": "GetQuestCharacterRankingResponse503"
+   },
+   "services": [
+    {
+     "name": "GetQuestCharacterRankingRequestService",
+     "request_model": "NtdGetQuestCharacterRankingRequest",
+     "response_model": "GetQuestCharacterRankingResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF870F0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "quest/cycle_exec",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "CycleExecQuestRequest",
+   "request_model": "CycleExecQuestRequest",
+   "response_models": {
+    "200": "CycleExecQuestResponse200",
+    "400": "CycleExecQuestResponse400",
+    "401": "CycleExecQuestResponse401",
+    "422": "CycleExecQuestResponse422",
+    "503": "CycleExecQuestResponse503"
+   },
+   "services": [
+    {
+     "name": "SkipQuestRequestService",
+     "request_model": "NtdCycleExecQuestRequest",
+     "response_model": "SkipQuestResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF46A00"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "quest/end",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "EndQuestRequest",
+   "request_model": "EndQuestRequest",
+   "response_models": {
+    "200": "EndQuestResponse200",
+    "400": "EndQuestResponse400",
+    "401": "EndQuestResponse401",
+    "422": "EndQuestResponse422",
+    "503": "EndQuestResponse503"
+   },
+   "services": [
+    {
+     "name": "FinishQuestRequestService",
+     "request_model": "NtdEndQuestRequest",
+     "response_model": "FinishQuestResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF4E4C0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "quest/masters_team",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetQuestMastersTeamListRequest",
+   "request_model": "GetQuestMastersTeamListRequest",
+   "response_models": {
+    "200": "GetQuestMastersTeamListResponse200",
+    "400": "GetQuestMastersTeamListResponse400",
+    "401": "GetQuestMastersTeamListResponse401",
+    "503": "GetQuestMastersTeamListResponse503"
+   },
+   "services": [
+    {
+     "name": "GetQuestMastersTeamListRequestService",
+     "request_model": "NtdGetQuestMastersTeamListRequest",
+     "response_model": "GetQuestMastersTeamListResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF87CD0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "quest/record/list",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetQuestRecordListSeqStartRequest",
+   "request_model": "GetQuestRecordListSeqStartRequest",
+   "response_models": {
+    "200": "GetQuestRecordListSeqStartResponse200",
+    "400": "GetQuestRecordListSeqStartResponse400",
+    "401": "GetQuestRecordListSeqStartResponse401",
+    "503": "GetQuestRecordListSeqStartResponse503"
+   },
+   "services": [
+    {
+     "name": "GetQuestsRequestService",
+     "request_model": "NtdGetQuestRecordListSeqStartRequest",
+     "response_model": "GetQuestsResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF894E0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "quest/record/list/continue",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetQuestRecordListSeqContinueRequest",
+   "request_model": "GetQuestRecordListSeqContinueRequest",
+   "response_models": {
+    "200": "GetQuestRecordListSeqContinueResponse200",
+    "400": "GetQuestRecordListSeqContinueResponse400",
+    "401": "GetQuestRecordListSeqContinueResponse401",
+    "503": "GetQuestRecordListSeqContinueResponse503"
+   },
+   "services": [
+    {
+     "name": "GetQuestsByTokenRequestService",
+     "request_model": "NtdGetQuestRecordListSeqContinueRequest",
+     "response_model": "GetQuestsResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF888B0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "quest/record/secret",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetQuestRecordSecretRequest",
+   "request_model": "GetQuestRecordSecretRequest",
+   "response_models": {
+    "200": "GetQuestRecordSecretResponse200",
+    "400": "GetQuestRecordSecretResponse400",
+    "401": "GetQuestRecordSecretResponse401",
+    "503": "GetQuestRecordSecretResponse503"
+   },
+   "services": [
+    {
+     "name": "GetQuestRecordSecretRequestService",
+     "request_model": "NtdGetQuestRecordSecretRequest",
+     "response_model": "GetQuestRecordSecretResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF8A110"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "quest/start",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "StartQuestRequest",
+   "request_model": "StartQuestRequest",
+   "response_models": {
+    "200": "StartQuestResponse200",
+    "400": "StartQuestResponse400",
+    "401": "StartQuestResponse401",
+    "422": "StartQuestResponse422",
+    "503": "StartQuestResponse503"
+   },
+   "services": [
+    {
+     "name": "StartQuestRequestService",
+     "request_model": "NtdStartQuestRequest",
+     "response_model": "StartQuestResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFC6520"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "quest/subskill_probabilities",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetSubSkillProbabilitiesRequest",
+   "request_model": "GetSubSkillProbabilitiesRequest",
+   "response_models": {
+    "200": "GetSubSkillProbabilitiesResponse200",
+    "400": "GetSubSkillProbabilitiesResponse400",
+    "401": "GetSubSkillProbabilitiesResponse401",
+    "503": "GetSubSkillProbabilitiesResponse503"
+   },
+   "services": [
+    {
+     "name": "GetSubSkillProbabilitiesRequestService",
+     "request_model": "NtdGetSubSkillProbabilitiesRequest",
+     "response_model": "GetSubSkillProbabilitiesResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF95250"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "reminder/flag/checkoff",
+   "method": "PUT",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "CheckoffFlaggedReminderRequest",
+   "request_model": "CheckoffFlaggedReminderRequest",
+   "response_models": {
+    "200": "CheckoffFlaggedReminderResponse200",
+    "400": "CheckoffFlaggedReminderResponse400",
+    "404": "CheckoffFlaggedReminderResponse404",
+    "503": "CheckoffFlaggedReminderResponse503"
+   },
+   "services": [
+    {
+     "name": "CheckoffFlaggedReminderRequestService",
+     "request_model": "NtdCheckoffFlaggedReminderRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF2DDA0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "reminder/flag/list",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetFlagListRequest",
+   "request_model": "GetFlagListRequest",
+   "response_models": {
+    "200": "GetFlagListResponse200",
+    "400": "GetFlagListResponse400",
+    "401": "GetFlagListResponse401",
+    "503": "GetFlagListResponse503"
+   },
+   "services": [
+    {
+     "name": "GetFlagListRequestService",
+     "request_model": "NtdGetFlagListRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF6F480"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "reminder/rev/checkoff",
+   "method": "PUT",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "CheckoffRevisionedReminderRequest",
+   "request_model": "CheckoffRevisionedReminderRequest",
+   "response_models": {
+    "200": "CheckoffRevisionedReminderResponse200",
+    "400": "CheckoffRevisionedReminderResponse400",
+    "404": "CheckoffRevisionedReminderResponse404",
+    "503": "CheckoffRevisionedReminderResponse503"
+   },
+   "services": [
+    {
+     "name": "CheckoffRevisionedReminderRequestService",
+     "request_model": "NtdCheckoffRevisionedReminderRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF2E980"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "sales/exchange/item",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "ExchangeShopItemRequest",
+   "request_model": "ExchangeShopItemRequest",
+   "response_models": {
+    "200": "ExchangeShopItemResponse200",
+    "400": "ExchangeShopItemResponse400",
+    "401": "ExchangeShopItemResponse401",
+    "404": "ExchangeShopItemResponse404",
+    "422": "ExchangeShopItemResponse422",
+    "503": "ExchangeShopItemResponse503"
+   },
+   "services": [
+    {
+     "name": "ExchangeShopItemRequestService",
+     "request_model": "NtdExchangeShopItemRequest",
+     "response_model": "ExchangeShopItemResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF62060"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "sales/exchange/item/payment",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "ExchangeShopItemByPaymentRequest",
+   "request_model": "ExchangeShopItemByPaymentRequest",
+   "response_models": {
+    "200": "ExchangeShopItemByPaymentResponse200",
+    "400": "ExchangeShopItemByPaymentResponse400",
+    "401": "ExchangeShopItemByPaymentResponse401",
+    "404": "ExchangeShopItemByPaymentResponse404",
+    "422": "ExchangeShopItemByPaymentResponse422",
+    "503": "ExchangeShopItemByPaymentResponse503"
+   },
+   "services": [
+    {
+     "name": "FinishPaymentRequestService",
+     "request_model": "NtdExchangeShopItemByPaymentRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF63760"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "sales/exchange/unit_awaking_pt",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "ExchangeUnitAwakingPtRequest",
+   "request_model": "ExchangeUnitAwakingPtRequest",
+   "response_models": {
+    "200": "ExchangeUnitAwakingPtResponse200",
+    "400": "ExchangeUnitAwakingPtResponse400",
+    "401": "ExchangeUnitAwakingPtResponse401",
+    "404": "ExchangeUnitAwakingPtResponse404",
+    "422": "ExchangeUnitAwakingPtResponse422",
+    "503": "ExchangeUnitAwakingPtResponse503"
+   },
+   "services": [
+    {
+     "name": "ExchangeAwakePointRequestService",
+     "request_model": "NtdExchangeUnitAwakingPtRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF64E70"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "sales/sell/item",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "SellItemRequest",
+   "request_model": "SellItemRequest",
+   "response_models": {
+    "200": "SellItemResponse200",
+    "400": "SellItemResponse400",
+    "401": "SellItemResponse401",
+    "404": "SellItemResponse404",
+    "422": "SellItemResponse422",
+    "503": "SellItemResponse503"
+   },
+   "services": [
+    {
+     "name": "SellItemRequestService",
+     "request_model": "NtdSellItemRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFC01F0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "sales/sp_favor/list",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetSpecialFavorListRequest",
+   "request_model": "GetSpecialFavorListRequest",
+   "response_models": {
+    "200": "GetSpecialFavorListResponse200",
+    "400": "GetSpecialFavorListResponse400",
+    "401": "GetSpecialFavorListResponse401",
+    "503": "GetSpecialFavorListResponse503"
+   },
+   "services": [
+    {
+     "name": "GetSpecialFavorListRequestService",
+     "request_model": "NtdGetSpecialFavorListRequest",
+     "response_model": "GetSpecialFavorListResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF926B0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "serial_code/use",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "UseSerialCodeRequest",
+   "request_model": "UseSerialCodeRequest",
+   "response_models": {
+    "200": "UseSerialCodeResponse200",
+    "400": "UseSerialCodeResponse400",
+    "401": "UseSerialCodeResponse401",
+    "404": "UseSerialCodeResponse404",
+    "503": "UseSerialCodeResponse503"
+   },
+   "services": [
+    {
+     "name": "UseSerialCodeRequestService",
+     "request_model": "NtdUseSerialCodeRequest",
+     "response_model": "UseSerialCodeResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFD0D70"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "skin/all",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetSkinAllRequest",
+   "request_model": "GetSkinAllRequest",
+   "response_models": {
+    "200": "GetSkinAllResponse200",
+    "400": "GetSkinAllResponse400",
+    "401": "GetSkinAllResponse401",
+    "503": "GetSkinAllResponse503"
+   },
+   "services": [
+    {
+     "name": "GetSkinAllRequestService",
+     "request_model": "NtdGetSkinAllRequest",
+     "response_model": "GetSkinAllResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF8C710"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "social/follow/delete",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "DeleteSocialFollowRequest",
+   "request_model": "DeleteSocialFollowRequest",
+   "response_models": {
+    "200": "DeleteSocialFollowResponse200",
+    "400": "DeleteSocialFollowResponse400",
+    "401": "DeleteSocialFollowResponse401",
+    "404": "DeleteSocialFollowResponse404",
+    "503": "DeleteSocialFollowResponse503"
+   },
+   "services": [
+    {
+     "name": "UnfollowFriendRequestService",
+     "request_model": "NtdDeleteSocialFollowRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF480E0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "social/follow/entry",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "EntrySocialFollowRequest",
+   "request_model": "EntrySocialFollowRequest",
+   "response_models": {
+    "200": "EntrySocialFollowResponse200",
+    "400": "EntrySocialFollowResponse400",
+    "401": "EntrySocialFollowResponse401",
+    "404": "EntrySocialFollowResponse404",
+    "422": "EntrySocialFollowResponse422",
+    "503": "EntrySocialFollowResponse503"
+   },
+   "services": [
+    {
+     "name": "FollowFriendRequestService",
+     "request_model": "NtdEntrySocialFollowRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF5C1D0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "social/follow/greeting",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GreetingSocialFollowRequest",
+   "request_model": "GreetingSocialFollowRequest",
+   "response_models": {
+    "200": "GreetingSocialFollowResponse200",
+    "400": "GreetingSocialFollowResponse400",
+    "401": "GreetingSocialFollowResponse401",
+    "404": "GreetingSocialFollowResponse404",
+    "503": "GreetingSocialFollowResponse503"
+   },
+   "services": [
+    {
+     "name": "GreetingSocialFollowRequestService",
+     "request_model": "NtdGreetingSocialFollowRequest",
+     "response_model": "GreetingSocialFollowResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF9BD90"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "social/follow/list",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetSocialFollowListRequest",
+   "request_model": "GetSocialFollowListRequest",
+   "response_models": {
+    "200": "GetSocialFollowListResponse200",
+    "400": "GetSocialFollowListResponse400",
+    "401": "GetSocialFollowListResponse401",
+    "503": "GetSocialFollowListResponse503"
+   },
+   "services": [
+    {
+     "name": "GetFollowFriendsRequestService",
+     "request_model": "NtdGetSocialFollowListRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF8F6E0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "social/follow/list/continue",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetSocialFollowListContinueRequest",
+   "request_model": "GetSocialFollowListContinueRequest",
+   "response_models": {
+    "200": "GetSocialFollowListContinueResponse200",
+    "400": "GetSocialFollowListContinueResponse400",
+    "401": "GetSocialFollowListContinueResponse401",
+    "503": "GetSocialFollowListContinueResponse503"
+   },
+   "services": [
+    {
+     "name": "GetFollowFriendsByTokenRequestService",
+     "request_model": "NtdGetSocialFollowListContinueRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF902C0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "social/follower/count",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetSocialFollowerCountRequest",
+   "request_model": "GetSocialFollowerCountRequest",
+   "response_models": {
+    "200": "GetSocialFollowerCountResponse200",
+    "400": "GetSocialFollowerCountResponse400",
+    "401": "GetSocialFollowerCountResponse401",
+    "503": "GetSocialFollowerCountResponse503"
+   },
+   "services": [
+    {
+     "name": "GetFollowerCountRequestService",
+     "request_model": "NtdGetSocialFollowerCountRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF8D2F0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "social/follower/list",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetSocialFollowerListRequest",
+   "request_model": "GetSocialFollowerListRequest",
+   "response_models": {
+    "200": "GetSocialFollowerListResponse200",
+    "400": "GetSocialFollowerListResponse400",
+    "401": "GetSocialFollowerListResponse401",
+    "503": "GetSocialFollowerListResponse503"
+   },
+   "services": [
+    {
+     "name": "GetFollowerFriendsRequestService",
+     "request_model": "NtdGetSocialFollowerListRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF8DED0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "social/follower/list/continue",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetSocialFollowerListContinueRequest",
+   "request_model": "GetSocialFollowerListContinueRequest",
+   "response_models": {
+    "200": "GetSocialFollowerListContinueResponse200",
+    "400": "GetSocialFollowerListContinueResponse400",
+    "401": "GetSocialFollowerListContinueResponse401",
+    "503": "GetSocialFollowerListContinueResponse503"
+   },
+   "services": [
+    {
+     "name": "GetFollowerFriendsByTokenRequestService",
+     "request_model": "NtdGetSocialFollowerListContinueRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF8EAB0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "social/player/search",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "SearchSocialPlayerByIdRequest",
+   "request_model": "SearchSocialPlayerByIdRequest",
+   "response_models": {
+    "200": "SearchSocialPlayerByIdResponse200",
+    "400": "SearchSocialPlayerByIdResponse400",
+    "401": "SearchSocialPlayerByIdResponse401",
+    "503": "SearchSocialPlayerByIdResponse503"
+   },
+   "services": [
+    {
+     "name": "SearchFriendRequestService",
+     "request_model": "NtdSearchSocialPlayerByIdRequest",
+     "response_model": "FriendSearchResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFBBA40"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "social/player/selects/recommended",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "SelectRecommendedSocialPlayerRequest",
+   "request_model": "SelectRecommendedSocialPlayerRequest",
+   "response_models": {
+    "200": "SelectRecommendedSocialPlayerResponse200",
+    "400": "SelectRecommendedSocialPlayerResponse400",
+    "401": "SelectRecommendedSocialPlayerResponse401",
+    "503": "SelectRecommendedSocialPlayerResponse503"
+   },
+   "services": [
+    {
+     "name": "GetRecommendedwFriendsRequestService",
+     "request_model": "NtdSelectRecommendedSocialPlayerRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFBDDB0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "social/rental_units",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetSocialRentalUnitsRequest",
+   "request_model": "GetSocialRentalUnitsRequest",
+   "response_models": {
+    "200": "GetSocialRentalUnitsResponse200",
+    "400": "GetSocialRentalUnitsResponse400",
+    "401": "GetSocialRentalUnitsResponse401",
+    "503": "GetSocialRentalUnitsResponse503"
+   },
+   "services": [
+    {
+     "name": "GetLendUnitsRequestService",
+     "request_model": "NtdGetSocialRentalUnitsRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF90EF0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "social/rental_units/selects",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "SelectRentalUnitsRequest",
+   "request_model": "SelectRentalUnitsRequest",
+   "response_models": {
+    "200": "SelectRentalUnitsResponse200",
+    "400": "SelectRentalUnitsResponse400",
+    "401": "SelectRentalUnitsResponse401",
+    "503": "SelectRentalUnitsResponse503"
+   },
+   "services": [
+    {
+     "name": "GetRentalUnitRequestService",
+     "request_model": "NtdSelectRentalUnitsRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFBE990"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "social/rental_units/update",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "UpdateSocialRentalUnitsRequest",
+   "request_model": "UpdateSocialRentalUnitsRequest",
+   "response_models": {
+    "200": "UpdateSocialRentalUnitsResponse200",
+    "400": "UpdateSocialRentalUnitsResponse400",
+    "401": "UpdateSocialRentalUnitsResponse401",
+    "503": "UpdateSocialRentalUnitsResponse503"
+   },
+   "services": [
+    {
+     "name": "UpdateLendUnitsRequestService",
+     "request_model": "NtdUpdateSocialRentalUnitsRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFCC700"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "social/user_text/update",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "UpdateSocialUserTextRequest",
+   "request_model": "UpdateSocialUserTextRequest",
+   "response_models": {
+    "200": "UpdateSocialUserTextResponse200",
+    "400": "UpdateSocialUserTextResponse400",
+    "401": "UpdateSocialUserTextResponse401",
+    "503": "UpdateSocialUserTextResponse503"
+   },
+   "services": [
+    {
+     "name": "UpdateSocialUserTextUpdateRequestService",
+     "request_model": "NtdUpdateSocialUserTextRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFCD510"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "story/list",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetStoryListRequest",
+   "request_model": "GetStoryListRequest",
+   "response_models": {
+    "200": "GetStoryListResponse200",
+    "400": "GetStoryListResponse400",
+    "401": "GetStoryListResponse401",
+    "422": "GetStoryListResponse422",
+    "503": "GetStoryListResponse503"
+   },
+   "services": [
+    {
+     "name": "GetStoriesRequestService",
+     "request_model": "NtdGetStoryListRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF93290"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "story/list/continue",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetStoryListContinueRequest",
+   "request_model": "GetStoryListContinueRequest",
+   "response_models": {
+    "200": "GetStoryListContinueResponse200",
+    "400": "GetStoryListContinueResponse400",
+    "401": "GetStoryListContinueResponse401",
+    "503": "GetStoryListContinueResponse503"
+   },
+   "services": [
+    {
+     "name": "GetStoriesByTokenRequestService",
+     "request_model": "NtdGetStoryListContinueRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF94620"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "story/read",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "ReadStoryRequest",
+   "request_model": "ReadStoryRequest",
+   "response_models": {
+    "200": "ReadStoryResponse200",
+    "400": "ReadStoryResponse400",
+    "401": "ReadStoryResponse401",
+    "422": "ReadStoryResponse422",
+    "503": "ReadStoryResponse503"
+   },
+   "services": [
+    {
+     "name": "ReadStoryRequestService",
+     "request_model": "NtdReadStoryRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFB0F60"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "sugoroku/end",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "EndSugorokuGameRequest",
+   "request_model": "EndSugorokuGameRequest",
+   "response_models": {
+    "200": "EndSugorokuGameResponse200",
+    "400": "EndSugorokuGameResponse400",
+    "401": "EndSugorokuGameResponse401",
+    "503": "EndSugorokuGameResponse503"
+   },
+   "services": [
+    {
+     "name": "EndSugorokuGameRequestService",
+     "request_model": "NtdEndSugorokuGameRequest",
+     "response_model": "EndSugorokuGameResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF509F0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "sugoroku/ingame/battle/end",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "EndSugorokuIngameBattleRequest",
+   "request_model": "EndSugorokuIngameBattleRequest",
+   "response_models": {
+    "200": "EndSugorokuIngameBattleResponse200",
+    "400": "EndSugorokuIngameBattleResponse400",
+    "401": "EndSugorokuIngameBattleResponse401",
+    "503": "EndSugorokuIngameBattleResponse503"
+   },
+   "services": [
+    {
+     "name": "EndSugorokuIngameBattleRequestService",
+     "request_model": "NtdEndSugorokuIngameBattleRequest",
+     "response_model": "EndSugorokuIngameBattleResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF51860"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "sugoroku/ingame/deck/save",
+   "method": "PUT",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "SaveSugorokuBattleDeckRequest",
+   "request_model": "SaveSugorokuBattleDeckRequest",
+   "response_models": {
+    "200": "SaveSugorokuBattleDeckResponse200",
+    "400": "SaveSugorokuBattleDeckResponse400",
+    "404": "SaveSugorokuBattleDeckResponse404",
+    "503": "SaveSugorokuBattleDeckResponse503"
+   },
+   "services": [
+    {
+     "name": "SaveSugorokuBattleDeckRequestService",
+     "request_model": "NtdSaveSugorokuBattleDeckRequest",
+     "response_model": "SaveSugorokuBattleDeckResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFBADC0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "sugoroku/ingame/item/select",
+   "method": "PUT",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "SelectSugorokuItemInGameRequest",
+   "request_model": "SelectSugorokuItemInGameRequest",
+   "response_models": {
+    "200": "SelectSugorokuItemInGameResponse200",
+    "400": "SelectSugorokuItemInGameResponse400",
+    "404": "SelectSugorokuItemInGameResponse404",
+    "503": "SelectSugorokuItemInGameResponse503"
+   },
+   "services": [
+    {
+     "name": "SelectSugorokuItemInGameRequestService",
+     "request_model": "NtdSelectSugorokuItemInGameRequest",
+     "response_model": "SelectSugorokuItemInGameResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFBF570"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "sugoroku/ingame/turn/end",
+   "method": "PUT",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "EndSugorokuIngameTurnRequest",
+   "request_model": "EndSugorokuIngameTurnRequest",
+   "response_models": {
+    "200": "EndSugorokuIngameTurnResponse200",
+    "400": "EndSugorokuIngameTurnResponse400",
+    "404": "EndSugorokuIngameTurnResponse404",
+    "503": "EndSugorokuIngameTurnResponse503"
+   },
+   "services": [
+    {
+     "name": "EndSugorokuIngameTurnRequestService",
+     "request_model": "NtdEndSugorokuIngameTurnRequest",
+     "response_model": "EndSugorokuIngameTurnResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF52930"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "sugoroku/ingame/turn/exec",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "ExecSugorokuIngameTurnRequest",
+   "request_model": "ExecSugorokuIngameTurnRequest",
+   "response_models": {
+    "200": "ExecSugorokuIngameTurnResponse200",
+    "400": "ExecSugorokuIngameTurnResponse400",
+    "401": "ExecSugorokuIngameTurnResponse401",
+    "503": "ExecSugorokuIngameTurnResponse503"
+   },
+   "services": [
+    {
+     "name": "ExecSugorokuIngameTurnRequestService",
+     "request_model": "NtdExecSugorokuIngameTurnRequest",
+     "response_model": "ExecSugorokuIngameTurnResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF678B0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "sugoroku/session/query",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "QuerySugorokuSuspendedSessionRequest",
+   "request_model": "QuerySugorokuSuspendedSessionRequest",
+   "response_models": {
+    "200": "QuerySugorokuSuspendedSessionResponse200",
+    "400": "QuerySugorokuSuspendedSessionResponse400",
+    "401": "QuerySugorokuSuspendedSessionResponse401",
+    "503": "QuerySugorokuSuspendedSessionResponse503"
+   },
+   "services": [
+    {
+     "name": "QuerySugorokuSuspendedSessionRequestService",
+     "request_model": "NtdQuerySugorokuSuspendedSessionRequest",
+     "response_model": "QuerySugorokuSuspendedSessionResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFB0380"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "sugoroku/start",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "StartSugorokuGameRequest",
+   "request_model": "StartSugorokuGameRequest",
+   "response_models": {
+    "200": "StartSugorokuGameResponse200",
+    "400": "StartSugorokuGameResponse400",
+    "401": "StartSugorokuGameResponse401",
+    "503": "StartSugorokuGameResponse503"
+   },
+   "services": [
+    {
+     "name": "StartSugorokuGameRequestService",
+     "request_model": "NtdStartSugorokuGameRequest",
+     "response_model": "StartSugorokuGameResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFC7C40"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "tutorial/skip",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "SkipTutorialRequest",
+   "request_model": "SkipTutorialRequest",
+   "response_models": {
+    "200": "SkipTutorialResponse200",
+    "400": "SkipTutorialResponse400",
+    "401": "SkipTutorialResponse401",
+    "503": "SkipTutorialResponse503"
+   },
+   "services": [
+    {
+     "name": "SkipTutorialRequestService",
+     "request_model": "NtdSkipTutorialRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFC59A0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "unit/",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetUnitRequest",
+   "request_model": "GetUnitRequest",
+   "response_models": {
+    "200": "GetUnitResponse200",
+    "400": "GetUnitResponse400",
+    "401": "GetUnitResponse401",
+    "503": "GetUnitResponse503"
+   },
+   "services": [],
+   "source": {
+    "constructor_rva": "0xF95E40"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "unit/all",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetUnitAllRequest",
+   "request_model": "GetUnitAllRequest",
+   "response_models": {
+    "200": "GetUnitAllResponse200",
+    "400": "GetUnitAllResponse400",
+    "401": "GetUnitAllResponse401",
+    "503": "GetUnitAllResponse503"
+   },
+   "services": [
+    {
+     "name": "GetUnitsRequestService",
+     "request_model": "NtdGetUnitAllRequest",
+     "response_model": "GetUnitsResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF96A20"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "unit/awakening",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "AwakeningUnitRequest",
+   "request_model": "AwakeningUnitRequest",
+   "response_models": {
+    "200": "AwakeningUnitResponse200",
+    "400": "AwakeningUnitResponse400",
+    "401": "AwakeningUnitResponse401",
+    "404": "AwakeningUnitResponse404",
+    "422": "AwakeningUnitResponse422",
+    "503": "AwakeningUnitResponse503"
+   },
+   "services": [
+    {
+     "name": "UpdateAwakingAbilityRequestService",
+     "request_model": "NtdAwakeningUnitRequest",
+     "response_model": "UpdateAwakingAbilityResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF27450"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "unit/charm/attach",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "AttachCharmRequest",
+   "request_model": "AttachCharmRequest",
+   "response_models": {
+    "200": "AttachCharmResponse200",
+    "400": "AttachCharmResponse400",
+    "401": "AttachCharmResponse401",
+    "404": "AttachCharmResponse404",
+    "422": "AttachCharmResponse422",
+    "503": "AttachCharmResponse503"
+   },
+   "services": [
+    {
+     "name": "AttachCharmRequestService",
+     "request_model": "NtdAttachCharmRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF24830"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "unit/discard",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "DiscardUnitRequest",
+   "request_model": "DiscardUnitRequest",
+   "response_models": {
+    "200": "DiscardUnitResponse200",
+    "400": "DiscardUnitResponse400",
+    "401": "DiscardUnitResponse401",
+    "404": "DiscardUnitResponse404",
+    "503": "DiscardUnitResponse503"
+   },
+   "services": [],
+   "source": {
+    "constructor_rva": "0xF4A4A0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "unit/enhancement",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "EnhanceUnitRequest",
+   "request_model": "EnhanceUnitRequest",
+   "response_models": {
+    "200": "EnhanceUnitResponse200",
+    "400": "EnhanceUnitResponse400",
+    "401": "EnhanceUnitResponse401",
+    "404": "EnhanceUnitResponse404",
+    "422": "EnhanceUnitResponse422",
+    "503": "EnhanceUnitResponse503"
+   },
+   "services": [
+    {
+     "name": "ReinforceUnitRequestService",
+     "request_model": "NtdEnhanceUnitRequest",
+     "response_model": "ReinforceUnitResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF57960"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "unit/enhancement/all",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "EnhanceUnitAllRequest",
+   "request_model": "EnhanceUnitAllRequest",
+   "response_models": {
+    "200": "EnhanceUnitAllResponse200",
+    "400": "EnhanceUnitAllResponse400",
+    "401": "EnhanceUnitAllResponse401",
+    "404": "EnhanceUnitAllResponse404",
+    "422": "EnhanceUnitAllResponse422",
+    "503": "EnhanceUnitAllResponse503"
+   },
+   "services": [
+    {
+     "name": "EnhanceUnitAllRequestService",
+     "request_model": "NtdEnhanceUnitAllRequest",
+     "response_model": "ReinforceUnitResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF59030"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "unit/enhancement/exskill",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "EnhanceUnitExSkillRequest",
+   "request_model": "EnhanceUnitExSkillRequest",
+   "response_models": {
+    "200": "EnhanceUnitExSkillResponse200",
+    "400": "EnhanceUnitExSkillResponse400",
+    "401": "EnhanceUnitExSkillResponse401",
+    "404": "EnhanceUnitExSkillResponse404",
+    "422": "EnhanceUnitExSkillResponse422",
+    "503": "EnhanceUnitExSkillResponse503"
+   },
+   "services": [
+    {
+     "name": "ReinforceUnitExSkillRequestService",
+     "request_model": "NtdEnhanceUnitExSkillRequest",
+     "response_model": "ReinforceUnitResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF5AB10"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "unit/enhancement/uniqueWeapon",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "EnhanceUniqueWeaponRequest",
+   "request_model": "EnhanceUniqueWeaponRequest",
+   "response_models": {
+    "200": "EnhanceUniqueWeaponResponse200",
+    "400": "EnhanceUniqueWeaponResponse400",
+    "401": "EnhanceUniqueWeaponResponse401",
+    "404": "EnhanceUniqueWeaponResponse404",
+    "422": "EnhanceUniqueWeaponResponse422",
+    "503": "EnhanceUniqueWeaponResponse503"
+   },
+   "services": [
+    {
+     "name": "ReinforceUniqueWeaponRequestService",
+     "request_model": "NtdEnhanceUniqueWeaponRequest",
+     "response_model": "ReinforceUniqueWeaponResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF562E0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "unit/exskill/equip",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "EquipExSkillRequest",
+   "request_model": "EquipExSkillRequest",
+   "response_models": {
+    "200": "EquipExSkillResponse200",
+    "400": "EquipExSkillResponse400",
+    "401": "EquipExSkillResponse401",
+    "404": "EquipExSkillResponse404",
+    "422": "EquipExSkillResponse422",
+    "503": "EquipExSkillResponse503"
+   },
+   "services": [
+    {
+     "name": "EquipExSkillRequestService",
+     "request_model": "NtdEquipExSkillRequest",
+     "response_model": "EquipExSkillResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF5DA90"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "unit/gear/equip",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "EquipGearRequest",
+   "request_model": "EquipGearRequest",
+   "response_models": {
+    "200": "EquipGearResponse200",
+    "400": "EquipGearResponse400",
+    "401": "EquipGearResponse401",
+    "404": "EquipGearResponse404",
+    "422": "EquipGearResponse422",
+    "503": "EquipGearResponse503"
+   },
+   "services": [
+    {
+     "name": "SetEquipmentRequestService",
+     "request_model": "NtdEquipGearRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF5F3C0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "unit/protection",
+   "method": "PUT",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "ProtectUnitRequest",
+   "request_model": "ProtectUnitRequest",
+   "response_models": {
+    "200": "ProtectUnitResponse200",
+    "400": "ProtectUnitResponse400",
+    "404": "ProtectUnitResponse404",
+    "503": "ProtectUnitResponse503"
+   },
+   "services": [
+    {
+     "name": "UpdateUnitLockRequestService",
+     "request_model": "NtdProtectUnitRequest",
+     "response_model": "UpdateUnitLockResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFAE670"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "unit/skill/attach",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "AttachSkillRequest",
+   "request_model": "AttachSkillRequest",
+   "response_models": {
+    "200": "AttachSkillResponse200",
+    "400": "AttachSkillResponse400",
+    "401": "AttachSkillResponse401",
+    "404": "AttachSkillResponse404",
+    "422": "AttachSkillResponse422",
+    "503": "AttachSkillResponse503"
+   },
+   "services": [
+    {
+     "name": "AttachSubSkillRequestService",
+     "request_model": "NtdAttachSkillRequest",
+     "response_model": "UpdateSubSkillResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF25E20"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "unit/skill/detach",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "DetachSkillRequest",
+   "request_model": "DetachSkillRequest",
+   "response_models": {
+    "200": "DetachSkillResponse200",
+    "400": "DetachSkillResponse400",
+    "401": "DetachSkillResponse401",
+    "404": "DetachSkillResponse404",
+    "422": "DetachSkillResponse422",
+    "503": "DetachSkillResponse503"
+   },
+   "services": [
+    {
+     "name": "DetachSubSkillRequestService",
+     "request_model": "NtdDetachSkillRequest",
+     "response_model": "UpdateSubSkillResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF48F10"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "unit/skin/equip",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "EquipSkinRequest",
+   "request_model": "EquipSkinRequest",
+   "response_models": {
+    "200": "EquipSkinResponse200",
+    "400": "EquipSkinResponse400",
+    "401": "EquipSkinResponse401",
+    "404": "EquipSkinResponse404",
+    "422": "EquipSkinResponse422",
+    "503": "EquipSkinResponse503"
+   },
+   "services": [
+    {
+     "name": "EquipSkinRequestService",
+     "request_model": "NtdEquipSkinRequest",
+     "response_model": "ResponseDataBase"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF60A30"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "unit/upgrade",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "UpgradeUnitRequest",
+   "request_model": "UpgradeUnitRequest",
+   "response_models": {
+    "200": "UpgradeUnitResponse200",
+    "400": "UpgradeUnitResponse400",
+    "401": "UpgradeUnitResponse401",
+    "404": "UpgradeUnitResponse404",
+    "422": "UpgradeUnitResponse422",
+    "503": "UpgradeUnitResponse503"
+   },
+   "services": [
+    {
+     "name": "ClassChangeRequestService",
+     "request_model": "NtdUpgradeUnitRequest",
+     "response_model": "ClassChangeResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFCF6F0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "vip/dmm_premium/benefits",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetDmmPremiumBenefitsRequest",
+   "request_model": "GetDmmPremiumBenefitsRequest",
+   "response_models": {
+    "200": "GetDmmPremiumBenefitsResponse200",
+    "400": "GetDmmPremiumBenefitsResponse400",
+    "401": "GetDmmPremiumBenefitsResponse401",
+    "503": "GetDmmPremiumBenefitsResponse503"
+   },
+   "services": [
+    {
+     "name": "GetDmmPremiumBenefitsRequestService",
+     "request_model": "NtdGetDmmPremiumBenefitsRequest",
+     "response_model": "GetDmmPremiumBenefitsResponseResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF6E840"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "vip/info",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetVipInfoRequest",
+   "request_model": "GetVipInfoRequest",
+   "response_models": {
+    "200": "GetVipInfoResponse200",
+    "400": "GetVipInfoResponse400",
+    "401": "GetVipInfoResponse401",
+    "503": "GetVipInfoResponse503"
+   },
+   "services": [],
+   "source": {
+    "constructor_rva": "0xF98E10"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "votes/campaign",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetVotesCampaignRequest",
+   "request_model": "GetVotesCampaignRequest",
+   "response_models": {
+    "200": "GetVotesCampaignResponse200",
+    "400": "GetVotesCampaignResponse400",
+    "401": "GetVotesCampaignResponse401",
+    "503": "GetVotesCampaignResponse503"
+   },
+   "services": [
+    {
+     "name": "GetVotesCampaignRequestService",
+     "request_model": "NtdGetVotesCampaignRequest",
+     "response_model": "GetVotesCampaignResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF9A5D0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "votes/post",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "PostVoteRequest",
+   "request_model": "PostVoteRequest",
+   "response_models": {
+    "200": "PostVoteResponse200",
+    "400": "PostVoteResponse400",
+    "401": "PostVoteResponse401",
+    "503": "PostVoteResponse503"
+   },
+   "services": [
+    {
+     "name": "PostVoteRequestService",
+     "request_model": "NtdPostVoteRequest",
+     "response_model": "PostVoteResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xFADA30"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "votes/ranking",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetVoteRankingRequest",
+   "request_model": "GetVoteRankingRequest",
+   "response_models": {
+    "200": "GetVoteRankingResponse200",
+    "400": "GetVoteRankingResponse400",
+    "401": "GetVoteRankingResponse401",
+    "503": "GetVoteRankingResponse503"
+   },
+   "services": [
+    {
+     "name": "GetVoteRankingRequestService",
+     "request_model": "NtdGetVoteRankingRequest",
+     "response_model": "GetVoteRankingResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF999F0"
+   }
+  },
+  {
+   "family": "ntd",
+   "endpoint": "wallet/all",
+   "method": "POST",
+   "protocol": 2,
+   "auth": true,
+   "request_class": "GetWalletAllRequest",
+   "request_model": "GetWalletAllRequest",
+   "response_models": {
+    "200": "GetWalletAllResponse200",
+    "400": "GetWalletAllResponse400",
+    "401": "GetWalletAllResponse401",
+    "503": "GetWalletAllResponse503"
+   },
+   "services": [
+    {
+     "name": "GetWalletsRequestService",
+     "request_model": "NtdGetWalletAllRequest",
+     "response_model": "GetWalletsResponseData"
+    },
+    {
+     "name": "GetWalletsRequestServiceForAccountDeletion",
+     "request_model": "NtdGetWalletAllRequest",
+     "response_model": "GetWalletsResponseData"
+    }
+   ],
+   "source": {
+    "constructor_rva": "0xF9B1B0"
+   }
+  }
+ ]
+}
