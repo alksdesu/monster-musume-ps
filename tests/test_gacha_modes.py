@@ -15,6 +15,7 @@ from test_gacha import (
     official,
     order,
     rates,
+    recorded,
     rejection,
     roll,
     runtime,
@@ -165,7 +166,8 @@ def test_select_pools_need_a_featured_choice(runtime, state):
 
 def test_selection_lists_every_live_select_pool(runtime, state):
     _, sample = official("gacha/select/get")
-    assert runtime.gacha.selections(state, NOW) == sample["data"]["select_gacha_datas"]
+    picks = sample["data"]["select_gacha_datas"]
+    assert recorded(runtime.gacha.selections(state, NOW), picks) == picks
     runtime.gacha.select(
         state,
         {"select_gacha_datas": [{"gacha_id": PICK, "unit_card": "unit.card.136"}]},
@@ -173,7 +175,7 @@ def test_selection_lists_every_live_select_pool(runtime, state):
     )
     listed = {
         row["gacha_id"]: row["unit_card"]
-        for row in runtime.gacha.selections(state, NOW)
+        for row in recorded(runtime.gacha.selections(state, NOW), picks)
     }
     assert listed == {
         SELECT_GROUP[0]: None,

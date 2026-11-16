@@ -80,13 +80,16 @@ def test_the_shipped_schedule_reopens_every_closed_mode(runtime):
     }
     assert all(set(table) == {"asset", "nest", "rows"} for table in payload["tables"])
     assert len(payload["revision"]) == 16
+    entries = runtime.schedule.config.read()["activities"]
+    # An entry that opens something ahead of its date writes its own start as well.
+    starts = {entry["start"] for entry in entries if "start" in entry}
     for asset, rows in assets.items():
         # Pools, and what the pool entry drags along, lose their end outright so the
         # gacha page prints no expiry on their banners; everything else runs to 2999.
         allowed = {""} if asset == "gacha_data.asset" else {FOREVER, ""}
         for row in rows:
             assert set(row) == {"key", "strings", "caches"}
-            assert set(row["strings"].values()) <= allowed
+            assert set(row["strings"].values()) <= allowed | starts
     assert {FOREVER} == {
         value for row in assets["event_list_data.asset"] for value in row["strings"].values()
     }
@@ -306,12 +309,15 @@ def test_a_pool_keeps_the_currencies_that_outlast_it(runtime):
 
 def test_banners_and_sign_in_sheets_can_be_scheduled_alone(runtime):
     opened = "2026/11/01 12:00:00"
+    # Banner ids are positions in a table the game rebuilds with every update.
+    banners = runtime.masters.base("banner_data")["table"]
+    banner = next(row["id"] for row in banners if row["endAt"])
     changes = scheduled(
         runtime,
-        activity("banner", 1748, start=opened, end=FOREVER),
+        activity("banner", banner, start=opened, end=FOREVER),
         activity("loginbonus", TICKET_SHEET, end=FOREVER),
     )
-    assert fields(changes, "banner_data", id=1748) == {
+    assert fields(changes, "banner_data", id=banner) == {
         "startAt": opened,
         "endAt": FOREVER,
     }
@@ -456,7 +462,9 @@ def test_entries_can_keep_whatever_was_running(runtime):
         runtime, {"kind": "pass", "running_at": SNAPSHOT, "end": FOREVER}
     )
     assert [row["key"] for row in seasons["season_pass_data"]] == [{"id": 10}]
-    assert not seasons["bonus_pass_data"]
+    # The monthly pass has no dates of its own, so only its season is moved.
+    moved = {row["key"]["id"] for row in seasons["bonus_pass_data"]}
+    assert MONTHLY_PASS not in moved
 
 
 def test_waves_are_the_line_ups_of_real_days(runtime):
@@ -469,7 +477,7 @@ def test_waves_are_the_line_ups_of_real_days(runtime):
         assert wave["at"].count(":") == 2 and wave["ids"]
     latest = waves[-1]
     assert set(latest["ids"]) == set(
-        schedule.selected({"kind": "gacha", "running_at": SNAPSHOT})
+        schedule.selected({"kind": "gacha", "running_at": latest["at"]})
     )
     # No wave is a plain subset of the wave after it.
     for earlier, later in zip(waves, waves[1:]):

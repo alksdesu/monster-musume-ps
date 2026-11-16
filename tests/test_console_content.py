@@ -39,7 +39,8 @@ async def test_content_tables_are_offered_without_battle_data(panel):
     assert {"recipe_skill", "event_character_growth"} <= set(tables)
     assert not hidden & set(tables)
     shop = tables["shop_data"]
-    assert (shop["rows"], shop["key"], shop["changed"]) == (12634, ["id"], 0)
+    shipped = runtime_of(panel).masters.base("shop_data")["table"]
+    assert (shop["rows"], shop["key"], shop["changed"]) == (len(shipped), ["id"], 0)
     assert shop["fields"] > 20
     assert tables["login_bonus_cell"]["key"] == ["#"]
     assert tables["wallet_template"]["key"] == ["category", "name"]

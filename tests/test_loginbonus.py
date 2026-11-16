@@ -171,20 +171,19 @@ def test_monthly_sheet_follows_the_game_month(runtime, state):
     assert record["progress"] == 1
 
 
+# Master data fetched later opens sheets of its own around the same days.
+def recorded(result):
+    return [sheet for sheet in progress(result) if sheet in OFFICIAL_SHEETS]
+
+
 def test_event_sheets_follow_their_master_term(runtime, state):
     closing = runtime.masters.timestamp("2026/11/16 10:29:59")
-    assert set(progress(runtime.login_bonus.stamp(state, closing - 1))) == set(
-        OFFICIAL_SHEETS
-    )
+    stamped_before = recorded(runtime.login_bonus.stamp(state, closing - 1))
+    assert set(stamped_before) == set(OFFICIAL_SHEETS)
     later = create_player(
         "bonus", "BONUS002", runtime.masters, runtime.config.read(), CREATED
     )
-    assert list(progress(runtime.login_bonus.stamp(later, closing))) == [
-        1,
-        153,
-        13,
-        471,
-    ]
+    assert recorded(runtime.login_bonus.stamp(later, closing)) == [1, 153, 13, 471]
 
 
 @pytest.mark.parametrize(("age", "opened"), [(179, True), (180, False)])

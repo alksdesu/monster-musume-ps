@@ -84,6 +84,12 @@ def official(endpoint):
     return samples[0]
 
 
+# Master data fetched after a sample was recorded lists pools the sample never saw.
+def recorded(rows: list[dict], sample: list[dict]) -> list[dict]:
+    known = {row["gacha_id"] for row in sample}
+    return [row for row in rows if row["gacha_id"] in known]
+
+
 def order(gacha_id=TUTORIAL, count=1):
     return {"gacha_id": gacha_id, "exec_num": count, "interruption": False}
 
@@ -263,8 +269,10 @@ def test_listing_matches_the_official_sample(runtime):
     # The official server kept one test pool whose prize table the client's master data lacks.
     unstocked = [pool for pool in official_ids if not catalog.stocked(catalog.pool(pool))]
     assert unstocked == ["gacha_ticket.normal.ticket_Default230806test_youkai"]
-    assert listed == [pool for pool in official_ids if pool not in unstocked]
-    assert len(listed) == 598
+    known = set(official_ids)
+    assert [pool for pool in listed if pool in known] == [
+        pool for pool in official_ids if pool not in unstocked
+    ]
 
 
 def test_listing_keeps_upcoming_pools_and_drops_finished_ones(runtime, pool):
@@ -688,7 +696,9 @@ async def test_native_catalog_follows_the_official_samples(tmp_path):
         assert listed["data"]["gacha_ids"] == runtime.gacha.listed(NOW)
         _, sample = official("gacha/select/get")
         chosen = await client.call("gacha/select/get", {"_z0": 0})
-        assert chosen["data"] == sample["data"]
+        assert chosen["data"].keys() == sample["data"].keys()
+        picks = sample["data"]["select_gacha_datas"]
+        assert recorded(chosen["data"]["select_gacha_datas"], picks) == picks
         request, sample = official("gacha/stamp_record/list")
         stamps = await client.call("gacha/stamp_record/list", request)
         assert stamps["data"] == sample["data"]

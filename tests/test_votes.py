@@ -106,7 +106,12 @@ def test_the_campaign_lists_its_candidates_and_the_ballot(runtime, state, campai
 
 def test_candidates_default_to_every_card_of_the_listed_rarities(runtime, state):
     candidates = runtime.votes.campaign(state, ROUND, NOW)["campaign"]["candidates"]
-    assert len(candidates) == len(set(candidates)) == 324
+    legends = [
+        card
+        for card in runtime.masters.assets("unitcard")
+        if card["rarityId"] == LEGEND
+    ]
+    assert len(candidates) == len(set(candidates)) == len(legends)
     assert all(
         runtime.masters.asset("unitcard", rid.rsplit(".", 1)[1])["rarityId"] == LEGEND
         for rid in candidates

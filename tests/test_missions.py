@@ -173,17 +173,25 @@ def test_listing_names_each_counter_once_in_first_appearance_order(runtime, stat
     }
 
 
+def listed(runtime, state, category, now=NOW):
+    return [row["id"] for row in listing(runtime, state, category, now)["record_list"]]
+
+
+def running(runtime, mission_id, now):
+    row = runtime.masters.lookup("mission_data", "id", mission_id)
+    return runtime.masters.in_term(row["startDate"], row["endDate"], now)
+
+
 def test_listing_hides_missions_outside_their_window(runtime, state):
-    assert len(listing(runtime, state, 4)["record_list"]) == 11
+    opened = listed(runtime, state, 4)
+    assert opened and all(running(runtime, mission, NOW) for mission in opened)
     closing_time = runtime.masters.timestamp("2026/11/16 10:29:59")
-    empty = {"record_list": [], "counter_list": []}
-    assert listing(runtime, state, 4, closing_time) == empty
-    assert listing(runtime, state, 3) == empty
-    assert [row["id"] for row in listing(runtime, state, 6)["record_list"]][:3] == [
-        2001,
-        2002,
-        2003,
-    ]
+    closed = {
+        mission for mission in opened if not running(runtime, mission, closing_time)
+    }
+    assert closed and not closed & set(listed(runtime, state, 4, closing_time))
+    assert listing(runtime, state, 3) == {"record_list": [], "counter_list": []}
+    assert listed(runtime, state, 6)[:3] == [2001, 2002, 2003]
 
 
 @pytest.mark.parametrize("category", [0, 8, "2", None, 2.0, True])

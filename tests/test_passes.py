@@ -72,22 +72,30 @@ async def put(http, client, endpoint, payload):
     )
 
 
+def monthly(rows):
+    return [row for row in rows if row["pass_id"] == MONTHLY]
+
+
 def test_running_passes_are_listed_like_the_official_sample(runtime, state):
     _, response = official("bonus_pass/progressions")
     listed = runtime.bonus_passes.progressions(state, NOW)
     sample = response["data"]["progressions"]
-    assert [{**row, "tier_progressed_at": 0} for row in listed] == [
+    # Master data fetched after the sample was recorded runs passes it never saw.
+    known = {row["pass_id"] for row in sample}
+    recorded = [row for row in listed if row["pass_id"] in known]
+    assert [{**row, "tier_progressed_at": 0} for row in recorded] == [
         {**row, "tier_progressed_at": 0} for row in sample
     ]
-    assert listed[0]["tier_progressed_at"] == NOW
+    assert recorded[0]["tier_progressed_at"] == NOW
     assert state["bonus_passes"] == listed
     assert runtime.bonus_passes.progressions(state, NOW + 5) == listed
 
 
 def test_closed_passes_leave_the_list(runtime, state):
     fund(runtime, state, POINTS, 10)
-    assert runtime.bonus_passes.progressions(state, AFTER_END) == [progression(state)]
-    assert runtime.bonus_passes.progressions(state, AFTER_CLOSE) == []
+    progressions = runtime.bonus_passes.progressions
+    assert monthly(progressions(state, AFTER_END)) == [progression(state)]
+    assert monthly(progressions(state, AFTER_CLOSE)) == []
     assert progression(state)["progression"] == 10
 
 
@@ -305,7 +313,7 @@ async def test_native_pass_round_trip(tmp_path):
     http, client, runtime, profile = await connect(tmp_path)
     try:
         listed = await client.call("bonus_pass/progressions", {"_z0": 0})
-        assert [row["pass_id"] for row in listed["data"]["progressions"]] == [MONTHLY]
+        assert MONTHLY in [row["pass_id"] for row in listed["data"]["progressions"]]
         bought = await client.call(
             "sales/exchange/item", {"shop_id": POINT_PACK, "quantity": 2}
         )
@@ -353,7 +361,7 @@ async def test_native_pass_round_trip(tmp_path):
         )
         assert unknown.status == 404
         relisted = await client.call("bonus_pass/progressions", {"_z0": 0})
-        row = relisted["data"]["progressions"][0]
+        (row,) = monthly(relisted["data"]["progressions"])
         assert (row["tier"], row["progression"]) == (2, 20)
         assert row["free_track"] == {
             "is_locked": False,

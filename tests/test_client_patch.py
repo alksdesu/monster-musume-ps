@@ -56,7 +56,7 @@ def test_changes_are_sent_with_where_the_game_keeps_them(runtime):
     assert (shop["rows"], shop["key"], shop["count"], shop["late"]) == (
         ["table"],
         ["id"],
-        12634,
+        len(runtime.masters.base("shop_data")["table"]),
         False,
     )
     assert [change["at"] for change in shop["changes"]] == [[GOODS]]
