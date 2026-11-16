@@ -1,7 +1,7 @@
 import pytest
 
 from monmusu_ps.console.presets import FREE, OPENERS
-from test_console import PROFILE, get, panel, post, runtime_of
+from test_console import NOW, PROFILE, get, panel, post, runtime_of
 
 
 __all__ = ["panel"]
@@ -60,8 +60,14 @@ async def test_an_all_entry_counts_as_opened_whatever_its_name(panel):
     named = {"name": "歴代のガチャ", "kind": "gacha", "all": True, "end": "2999/12/31 23:59:59"}
     await post(panel, "schedule", {"document": {"activities": [named], "rows": []}})
     gacha = listed((await get(panel, "presets"))["actions"], "open_gacha")
+    runtime = runtime_of(panel)
+    upcoming = sum(
+        row["start"] != "" and runtime.masters.timestamp(row["start"]) > NOW
+        for row in runtime.schedule.entrances("gacha")
+    )
     # Without a start of its own the entry leaves pools that have not begun alone.
-    assert gacha["opened"] and gacha["total"] - 3 < gacha["running"] < gacha["total"]
+    assert gacha["opened"] and upcoming
+    assert gacha["running"] == gacha["total"] - upcoming
     closed = await post(panel, "presets/run", {"key": "open_gacha", "on": False})
     assert closed["dropped"] > 700
     assert runtime_of(panel).schedule.config.read()["activities"] == []
@@ -95,6 +101,23 @@ async def test_entrances_are_picked_one_by_one(panel):
         {"key": "open_event", "ids": [-1], "on": True},
         expect=400,
     )
+
+
+async def test_entries_are_named_after_what_they_open(panel):
+    actions = (await get(panel, "presets"))["actions"]
+    opened = [row for row in actions if row["action"] == "open"]
+    assert all(row["title"].startswith(row["subject"]) for row in opened)
+    goods = listed(actions, "open_goods")
+    assert (goods["subject"], goods["title"]) == ("商品", "商品全部上架")
+    ended = await get(panel, "presets/items", key="open_goods", status="ended", limit=1)
+    ids = [ended["rows"][0]["id"]]
+    await post(panel, "presets/pick", {"key": "open_goods", "ids": ids, "on": True})
+    await post(panel, "presets/run", {"key": "open_goods"})
+    entries = runtime_of(panel).schedule.config.read()["activities"]
+    assert [entry["name"] for entry in entries] == [
+        "商品（挑选开放）",
+        "商品（全部开放）",
+    ]
 
 
 async def test_the_free_switch_waives_every_price(panel):

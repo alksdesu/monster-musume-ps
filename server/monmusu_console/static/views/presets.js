@@ -42,7 +42,7 @@ function picker(action, remount) {
       return;
     }
     const outcome = await attempt(() => api.post("presets/pick", { key: action.key, ids: [...chosen], on: true }));
-    if (outcome) await remount(`${action.title.replace("全部开放", "")}：已挑开 ${outcome.picked} 个，游戏回标题重进后可见。`);
+    if (outcome) await remount(`${action.subject}：已挑开 ${outcome.picked} 个，游戏回标题重进后可见。`);
   }
 
   async function drop(id) {
@@ -183,7 +183,7 @@ function waves(action, remount) {
 
 function opener(action, remount) {
   async function all(on) {
-    const asked = on ? `把${action.title.replace("全部开放", "")}全部开到永远？` : "撤销这一类的全部开放，恢复各自原本的期间？";
+    const asked = on ? `把${action.subject}全部开到永远？` : "撤销这一类的全部开放，恢复各自原本的期间？";
     if (!confirm(asked)) return;
     const outcome = await attempt(() => api.post("presets/run", { key: action.key, on }));
     if (outcome) await remount(on ? `已全部开放 ${outcome.opened} 个，游戏回标题重进后可见。` : `已撤销，${outcome.dropped} 个回到原本的期间。`);

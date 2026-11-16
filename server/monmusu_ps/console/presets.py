@@ -22,10 +22,19 @@ class Opener:
     key: str
     group: str
     kind: str
-    title: str
+    subject: str
     blurb: str
     end: str = FOREVER
     waves: bool = False
+    verb: str = OPEN_ALL
+
+    @property
+    def title(self) -> str:
+        return self.subject + self.verb
+
+    # The console finds its own schedule entries again by this name.
+    def named(self, suffix: str) -> str:
+        return self.subject + suffix
 
 
 @dataclass(frozen=True)
@@ -192,60 +201,61 @@ OPENERS = (
         "open_shop_tab",
         "shop",
         "shop_tab",
-        "商店页签全部开放",
+        "商店页签",
         "过期或还没开的商店页签全部开到永远。",
     ),
-    Opener("open_goods", "shop", "goods", "商品全部上架", "每一件限时商品都开到永远。"),
+    Opener(
+        "open_goods",
+        "shop",
+        "goods",
+        "商品",
+        "每一件限时商品都开到永远。",
+        verb="全部上架",
+    ),
     Opener(
         "open_gacha",
         "gacha",
         "gacha",
-        "卡池全部开放",
+        "卡池",
         "结束了的和还没开始的卡池全部开到永远；一次全开有五百多个横幅，卡池页会很慢，按期挑着开更合适。",
         end=UNBOUNDED,
         waves=True,
     ),
-    Opener(
-        "open_mission", "mission", "mission", "任务全部开放", "限时任务全部开到永远。"
-    ),
+    Opener("open_mission", "mission", "mission", "任务", "限时任务全部开到永远。"),
     Opener(
         "open_loginbonus",
         "login",
         "loginbonus",
-        "签到表全部开放",
+        "签到表",
         "每一张签到表都开到永远。",
     ),
     Opener(
         "open_event",
         "event",
         "event",
-        "活动全部开放",
+        "活动",
         "活动列表里的每个活动都开到永远，连带它的关卡、任务和商店。",
     ),
-    Opener("open_bingo", "event", "bingo", "宾果全部开放", "每一期宾果都开到永远。"),
-    Opener(
-        "open_sugoroku", "event", "sugoroku", "双六全部开放", "每一期双六都开到永远。"
-    ),
+    Opener("open_bingo", "event", "bingo", "宾果", "每一期宾果都开到永远。"),
+    Opener("open_sugoroku", "event", "sugoroku", "双六", "每一期双六都开到永远。"),
     Opener(
         "open_secret",
         "event",
         "secret",
-        "ヒミツ狩猎全部开放",
+        "ヒミツ狩猎",
         "限时的ヒミツ分类全部开到永远。",
     ),
-    Opener("open_vote", "event", "vote", "人气投票全部开放", "每一届投票都开到永远。"),
+    Opener("open_vote", "event", "vote", "人气投票", "每一届投票都开到永远。"),
     Opener(
         "open_pass",
         "pass",
         "pass",
-        "通行证与月票全部开放",
+        "通行证与月票",
         "每一期通行证和月票都开到永远。",
     ),
-    Opener("open_quest", "quest", "quest", "关卡全部开放", "限时关卡全部开到永远。"),
-    Opener("open_banner", "notice", "banner", "横幅全部开放", "首页横幅全部开到永远。"),
-    Opener(
-        "open_announce", "notice", "announce", "公告图全部开放", "公告图全部开到永远。"
-    ),
+    Opener("open_quest", "quest", "quest", "关卡", "限时关卡全部开到永远。"),
+    Opener("open_banner", "notice", "banner", "横幅", "首页横幅全部开到永远。"),
+    Opener("open_announce", "notice", "announce", "公告图", "公告图全部开到永远。"),
 )
 # One switch waives every price the game asks, so the groups that charge all show it.
 FREE_GROUPS = ("shop", "gacha", "growth", "quest")
@@ -289,10 +299,6 @@ LINKS = (
         "在「一键」页按存档执行。",
     ),
 )
-
-
-def _named(opener: Opener, suffix: str) -> str:
-    return opener.title.removesuffix(OPEN_ALL) + suffix
 
 
 class Presets:
@@ -396,7 +402,7 @@ class Presets:
 
     # The entry is rewritten whole each time: it starts today and never ends.
     def _put(self, opener: Opener, suffix: str, selector: dict | None) -> None:
-        name = _named(opener, suffix)
+        name = opener.named(suffix)
         kept = [entry for entry in self._entries() if entry["name"] != name]
         if selector:
             kept.append(
@@ -431,7 +437,7 @@ class Presets:
         return {"dropped": self._dated(opener.kind)}
 
     def picked(self, key: str) -> list:
-        entry = self._entry(_named(self._opener(key), PICK_SUFFIX))
+        entry = self._entry(self._opener(key).named(PICK_SUFFIX))
         return list(entry["ids"]) if entry else []
 
     def pick(self, key: str, ids: list, on: bool) -> dict:
@@ -451,7 +457,7 @@ class Presets:
         return {"picked": len(chosen), "changed": len(chosen ^ current)}
 
     def _wave_entry(self, opener: Opener) -> dict | None:
-        return self._entry(_named(opener, WAVE_SUFFIX))
+        return self._entry(opener.named(WAVE_SUFFIX))
 
     def picked_waves(self, key: str) -> list[str]:
         entry = self._wave_entry(self._opener(key))
@@ -528,6 +534,7 @@ class Presets:
                     "group": opener.group,
                     "action": "open",
                     "title": opener.title,
+                    "subject": opener.subject,
                     "blurb": opener.blurb,
                     "running": running,
                     "total": total,
